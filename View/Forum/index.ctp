@@ -85,7 +85,7 @@
                                     </div>
                                     <div class="col-md-4 col-sm-4 col-xs-3 hidden-mob forum-category-last">
                                         <?php if($forum['Forum']['nb_discussion'] != 0 && $forum['Forum']['nb_message'] != 0): ?>
-                                            <a style="color:<?php if(!empty($internal['last_colortitle'])) echo $internal['last_colortitle']; ?>" href="<?= $forum['Forum']['topic_last_href']; ?>"><?= $this->Text->truncate(h($forum['Forum']['topic_last_title']), 70); ?></a><br/>
+                                            <a style="color:<?php if(!empty($internal['last_colortitle'])) echo $internal['last_colortitle']; ?>" href="<?= h($forum['Forum']['topic_last_href']); ?>"><?= $this->Text->truncate(h($forum['Forum']['topic_last_title']), 70); ?></a><br/>
                                             <a style="color:#<?= $forum['Forum']['topic_last_author_color']; ?>" href="<?= $this->Html->url('/user/'.$forum['Forum']['topic_last_author'].'.'.$forum['Forum']['topic_last_authorid'].'/'); ?>"><?= $forum['Forum']['topic_last_author']; ?></a>, <span style="color:<?php if(!empty($internal['last_colordate'])) echo $internal['last_colordate']; ?>"><?= $forum['Forum']['topic_last_date']; ?></span>
                                         <?php endif; ?>
                                     </div>
