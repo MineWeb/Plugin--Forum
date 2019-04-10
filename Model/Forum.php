@@ -69,9 +69,9 @@ class Forum extends ForumAppModel
     public function update($type = false, $id = false, $datas = false)
     {
         if ($type == 'forum') {
-            return $this->updateAll(['forum_name' => "'".$datas['name']."'", 'position' => "'".$datas['position']."'", 'forum_image' => "'".$datas['image']."'", 'forum_description' => "'".$datas['forum_description']."'"], ['id' => $id]);;
+            return $this->updateAll(['forum_name' => "'".$datas['name']."'", 'position' => "'".$datas['position']."'", 'forum_image' => "'".$datas['image']."'", 'forum_description' => "'".str_replace("'", "\'", $datas['forum_description'])."'"], ['id' => $id]);
         } elseif ($type == 'category') {
-            return $this->updateAll(['forum_name' => "'".$datas['name']."'", 'id_parent' => "'".$datas['id_parent']."'", 'position' => $datas['position'], 'forum_image' => "'".$datas['forum_image']."'", 'lock' => $datas['lock'], 'automatic_lock' => $datas['automatic_lock']], ['id' => $id]);;
+            return $this->updateAll(['forum_name' => "'".$datas['name']."'", 'id_parent' => "'".$datas['id_parent']."'", 'position' => $datas['position'], 'forum_image' => "'".$datas['forum_image']."'", 'lock' => $datas['lock'], 'automatic_lock' => $datas['automatic_lock']], ['id' => $id]);
         }
     }
 
