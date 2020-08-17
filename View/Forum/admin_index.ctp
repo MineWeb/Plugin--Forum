@@ -23,6 +23,27 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><?= $Lang->get('FORUM__INFORMATION') ?></h3>
+                        </div>
+                        <div class="box-body">
+                            <p>
+                                <?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_8'); ?>
+                                <ul>
+                                    <li><a href="https://www.phpierre.fr/" target="_blank">Site web</a></li>
+                                    <li><a href="https://twitter.com/PHPierrre" target="_blank">Profil Twitter</a></li>
+                                    <li><a href="https://github.com/PHPierrre" target="_blank">Profil Github</a></li>
+                                </ul>
+                            </p>
+                            <br />
+                            <b><?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_7'); ?></b>
+                            <ul>
+                                <li><a href="https://github.com/MineWeb/Plugin-Forum" target="_blank">Le code du forum sur Github</a></li>
+                                <li><a href="https://discordapp.com/invite/3QYdt8r" target="_blank">Le discord de MineWeb</a></li>
+                            </ul>
+                        </div>
+                    </div>
                     <div class="box box-success">
                         <div class="box-header with-border">
                             <h3 class="box-title"><?= $Lang->get('USER__RANK_MEMBER'); ?><?php if($stats['countuser'] > 1) echo 's'; ?><?= $Lang->get('FORUM__PHRASE__ONLINE'); ?></h3>
@@ -53,11 +74,6 @@
                 </div>
                 <div class="box-body">
                     <?= $remoteMsg['info']; ?>
-                    <p>
-                        <?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_1'); ?><br />
-                        <?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_2'); ?><a href="https://www.phpierre.fr/contact">lien</a><?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_3'); ?><br />
-                        <?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_4'); ?>
-                    </p>
                 </div>
             </div>
             <div class="row">
@@ -142,17 +158,6 @@
                             <button class="btn btn-danger" type="submit"><?= $Lang->get('FORUM__DROP') ?></button>
                         </div>
                     </form>
-                </div>
-            </div>
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><?= $Lang->get('FORUM__NEXT__UPDATE') ?></h3>
-                </div>
-                <div class="box-body">
-                    <?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_7'); ?>
-                    <?php foreach ($remoteMsg['nextupdate'] as $msg): ?>
-                        <?= $msg; ?>
-                    <?php endforeach; ?>
                 </div>
             </div>
         </div>

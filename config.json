@@ -118,7 +118,7 @@
     "Forum": "/forum"
   },
   "author":"PHPierre",
-  "version":"1.4.6",
+  "version":"1.4.7",
   "apiID":-1,
   "useEvents":false,
   "permissions" : {
