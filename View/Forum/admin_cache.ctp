@@ -6,11 +6,11 @@
                 <h4><i class="icon fa fa-info"></i> <?= $Lang->get('FORUM__INFORMATION'); ?></h4>
                 <?= $Lang->get('FORUM__CACHE__EXPLANATION'); ?><br />
             </div>
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><?= $Lang->get('FORUM__CACHE') ?></h3>
+            <div class="card">
+                <div class="card-header with-border">
+                    <h3 class="card-title"><?= $Lang->get('FORUM__CACHE') ?></h3>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <?php if($config): ?>
                         <a class="btn btn-large btn-block btn-danger" href="<?= $this->Html->url('/admin/forum/forum/cache/deactivate'); ?>"><?= $Lang->get('FORUM__DEACTIVATE__CACHE') ?></a>
                     <?php else: ?>
@@ -18,8 +18,8 @@
                     <?php endif; ?>
                 </div>
             </div>
-            <div class="box">
-                <div class="box-body">
+            <div class="card">
+                <div class="card-body">
                     <table class="table table-bordered dataTable">
                         <thead>
                         <tr>
@@ -44,8 +44,8 @@
                     </table>
                 </div>
             </div>
-            <div class="box">
-                <div class="box-body">
+            <div class="card">
+                <div class="card-body">
                     <a class="btn btn-large btn-block btn-danger" href="<?= $this->Html->url('/admin/forum/forum/cache/empty'); ?>"><?= $Lang->get('FORUM__CACHE__EMPTY') ?></a>
                 </div>
             </div>

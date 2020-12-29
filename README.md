@@ -5,7 +5,7 @@ Dynamisez votre site à l'aide du Forum et  augmentez votre communauté de joueu
 ## Pré-requis
 
 ```
-Mineweb > 1.2.0
+Mineweb > 1.11.0
 ```
 
 ## Présentation

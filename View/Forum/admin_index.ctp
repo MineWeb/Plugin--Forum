@@ -23,11 +23,11 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="box">
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><?= $Lang->get('FORUM__INFORMATION') ?></h3>
+                    <div class="card">
+                        <div class="card-header with-border">
+                            <h3 class="card-title"><?= $Lang->get('FORUM__INFORMATION') ?></h3>
                         </div>
-                        <div class="box-body">
+                        <div class="card-body">
                             <p>
                                 <?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_8'); ?>
                                 <ul>
@@ -44,18 +44,18 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="box box-success">
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><?= $Lang->get('USER__RANK_MEMBER'); ?><?php if($stats['countuser'] > 1) echo 's'; ?><?= $Lang->get('FORUM__PHRASE__ONLINE'); ?></h3>
-                            <div class="box-tools pull-right">
+                    <div class="card card-success">
+                        <div class="card-header with-border">
+                            <h3 class="card-title"><?= $Lang->get('USER__RANK_MEMBER'); ?><?php if($stats['countuser'] > 1) echo 's'; ?><?= $Lang->get('FORUM__PHRASE__ONLINE'); ?></h3>
+                            <div class="card-tools pull-right">
                                 <span class="label label-success"><?= $stats['countuser']; ?> <?= $Lang->get('USER__RANK_MEMBER'); ?><?php if($stats['countuser'] > 1) echo 's'; ?><?= $Lang->get('FORUM__PHRASE__ONLINE'); ?></span>
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                <button type="button" class="btn btn-card-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                                 </button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i>
+                                <button type="button" class="btn btn-card-tool" data-widget="remove"><i class="fa fa-times"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="box-body no-padding">
+                        <div class="card-body no-padding">
                             <ul class="users-list clearfix">
                                 <?php foreach($userOnlines as $userOnline): ?>
                                     <li style="width: 10%">
@@ -68,11 +68,11 @@
                     </div>
                 </div>
             </div>
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><?= $Lang->get('FORUM__GENERAL') ?></h3>
+            <div class="card">
+                <div class="card-header with-border">
+                    <h3 class="card-title"><?= $Lang->get('FORUM__GENERAL') ?></h3>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <?= $remoteMsg['info']; ?>
                 </div>
             </div>
@@ -96,9 +96,9 @@
                     </div>
                 </div>
             </div>
-            <div class="box">
-                <div class="box-body">
-                    <h3 class="box-title"><?= $Lang->get('FORUM__CONFIG') ?></h3>
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title"><?= $Lang->get('FORUM__CONFIG') ?></h3>
                     <form action="" method="post" data-ajax="true">
                         <input type="hidden" name="config" value="42" />
                         <div class="ajax-msg"></div>
@@ -123,9 +123,9 @@
                     </form>
                 </div>
             </div>
-            <div class="box">
-                <div class="box-body">
-                    <h3 class="box-title"><?= $Lang->get('FORUM__CONFIG__INSTALL') ?></h3>
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title"><?= $Lang->get('FORUM__CONFIG__INSTALL') ?></h3>
                     <p style="color: #dc322f"><?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_5'); ?></p>
                     <div class="row">
                         <div class="col-md-12">
@@ -147,9 +147,9 @@
                     </div>
                 </div>
             </div>
-            <div class="box">
-                <div class="box-body">
-                    <h3 class="box-title"><?= $Lang->get('FORUM__CONFIG__HISTORY') ?></h3>
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title"><?= $Lang->get('FORUM__CONFIG__HISTORY') ?></h3>
                     <p><?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_6'); ?></p>
                     <form action="" method="post" data-ajax="true">
                         <input type="hidden" name="drop" value="42" />

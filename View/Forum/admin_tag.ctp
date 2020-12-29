@@ -7,11 +7,11 @@
 <section class="content">
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-info">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><?= $Lang->get('FORUM__RANK') ?></h3>
+            <div class="card card-info">
+                <div class="card-header with-border">
+                    <h3 class="card-title"><?= $Lang->get('FORUM__RANK') ?></h3>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <div class="row">
                 <div class="col-md-12">
                     <form action="" method="post" data-ajax="true">
@@ -80,11 +80,11 @@
                 </div>
             </div>
 
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><?= $Lang->get('FORUM__RANK') ?></h3>
+            <div class="card card-primary">
+                <div class="card-header with-border">
+                    <h3 class="card-title"><?= $Lang->get('FORUM__RANK') ?></h3>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
                             <table class="table table-responsive dataTable">

@@ -14,11 +14,11 @@
                         <div class="tab-pane active" id="tab_general">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div id="tab_general accordion" class="box box-info">
-                                        <div class="box-header with-border">
-                                            <h3 class="box-title"><?= $Lang->get('FORUM__BACKGROUND'); ?></h3>
+                                    <div id="tab_general accordion" class="card card-info">
+                                        <div class="card-header with-border">
+                                            <h3 class="card-title"><?= $Lang->get('FORUM__BACKGROUND'); ?></h3>
                                         </div>
-                                        <div class="box-body">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12" id="dropdown">
                                                     <?= $this->Form->create(false, ['type' => 'post', 'data-ajax' => 'true']); ?>
@@ -53,11 +53,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="tab_general accordion" class="box box-warning">
-                                        <div class="box-header with-border">
-                                            <h3 class="box-title"><?= $Lang->get('FORUM__MANAGE__ARROW'); ?></h3>
+                                    <div id="tab_general accordion" class="card card-warning">
+                                        <div class="card-header with-border">
+                                            <h3 class="card-title"><?= $Lang->get('FORUM__MANAGE__ARROW'); ?></h3>
                                         </div>
-                                        <div class="box-body">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <?php echo $this->Form->create(false, ['type' => 'post', 'data-ajax' => 'true']); ?>
@@ -75,11 +75,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="tab_general accordion" class="box box-primary">
-                                        <div class="box-header with-border">
-                                            <h3 class="box-title"><?= $Lang->get('FORUM__MANAGE__FORUM'); ?></h3>
+                                    <div id="tab_general accordion" class="card card-primary">
+                                        <div class="card-header with-border">
+                                            <h3 class="card-title"><?= $Lang->get('FORUM__MANAGE__FORUM'); ?></h3>
                                         </div>
-                                        <div class="box-body">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <?php echo $this->Form->create(false, ['type' => 'post', 'data-ajax' => 'true']); ?>
@@ -93,11 +93,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="tab_general accordion" class="box box-info">
-                                        <div class="box-header with-border">
-                                            <h3 class="box-title"><?= $Lang->get('FORUM__MANAGE__HOME'); ?></h3>
+                                    <div id="tab_general accordion" class="card card-info">
+                                        <div class="card-header with-border">
+                                            <h3 class="card-title"><?= $Lang->get('FORUM__MANAGE__HOME'); ?></h3>
                                         </div>
-                                        <div class="box-body">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <?php echo $this->Form->create(false, ['type' => 'post', 'data-ajax' => 'true']); ?>
@@ -117,11 +117,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div id="tab_general accordion" class="box box-success">
-                                        <div class="box-header with-border">
-                                            <h3 class="box-title"><?= $Lang->get('FORUM__MANAGE__DESCRIPTIONS'); ?></h3>
+                                    <div id="tab_general accordion" class="card card-success">
+                                        <div class="card-header with-border">
+                                            <h3 class="card-title"><?= $Lang->get('FORUM__MANAGE__DESCRIPTIONS'); ?></h3>
                                         </div>
-                                        <div class="box-body">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <?php echo $this->Form->create(false, ['type' => 'post', 'data-ajax' => 'true']); ?>
@@ -140,11 +140,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div id="tab_general accordion" class="box box-danger">
-                                        <div class="box-header with-border">
-                                            <h3 class="box-title"><?= $Lang->get('FORUM__MANAGE__ICONS'); ?></h3>
+                                    <div id="tab_general accordion" class="card card-danger">
+                                        <div class="card-header with-border">
+                                            <h3 class="card-title"><?= $Lang->get('FORUM__MANAGE__ICONS'); ?></h3>
                                         </div>
-                                        <div class="box-body">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <ol class="forum-breadcrumb forum-breadcrumb-menu">
@@ -237,11 +237,11 @@
                         <div class="tab-pane active" id="tab_general">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div id="tab_general accordion" class="box box-primary">
-                                        <div class="box-header with-border">
-                                            <h3 class="box-title"><?= $Lang->get('FORUM__MANAGE__LASTTOPIC'); ?></h3>
+                                    <div id="tab_general accordion" class="card card-primary">
+                                        <div class="card-header with-border">
+                                            <h3 class="card-title"><?= $Lang->get('FORUM__MANAGE__LASTTOPIC'); ?></h3>
                                         </div>
-                                        <div class="box-body">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <?php echo $this->Form->create(false, ['type' => 'post', 'data-ajax' => 'true']); ?>
@@ -261,11 +261,11 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div id="tab_general accordion" class="box box-warning">
-                                        <div class="box-header with-border">
-                                            <h3 class="box-title"><?= $Lang->get('FORUM__MANAGE__TOPIC'); ?></h3>
+                                    <div id="tab_general accordion" class="card card-warning">
+                                        <div class="card-header with-border">
+                                            <h3 class="card-title"><?= $Lang->get('FORUM__MANAGE__TOPIC'); ?></h3>
                                         </div>
-                                        <div class="box-body">
+                                        <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <?php echo $this->Form->create(false, ['type' => 'post', 'data-ajax' => 'true']); ?>

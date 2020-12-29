@@ -99,11 +99,11 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-info">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><?= $Lang->get('FORUM__STATISTIC__VIEWTOPIC') ?></h3>
+            <div class="card card-info">
+                <div class="card-header with-border">
+                    <h3 class="card-title"><?= $Lang->get('FORUM__STATISTIC__VIEWTOPIC') ?></h3>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
                             <div id="chart-bb-spline-views"></div>
@@ -115,11 +115,11 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-warning">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><?= $Lang->get('FORUM__STATISTIC__TOPICCREATE') ?></h3>
+            <div class="card card-warning">
+                <div class="card-header with-border">
+                    <h3 class="card-title"><?= $Lang->get('FORUM__STATISTIC__TOPICCREATE') ?></h3>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
                             <div id="chart-bb-spline-nbtopic"></div>
@@ -150,11 +150,11 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-info">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><?= $Lang->get('FORUM__STATISTIC__VIEWTOPIC') ?></h3>
+            <div class="card card-info">
+                <div class="card-header with-border">
+                    <h3 class="card-title"><?= $Lang->get('FORUM__STATISTIC__VIEWTOPIC') ?></h3>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
                             <div id="chart-bb-spline-viewsmonth"></div>
@@ -167,11 +167,11 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-warning">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><?= $Lang->get('FORUM__STATISTIC__TOPICCREATE') ?></h3>
+            <div class="card card-warning">
+                <div class="card-header with-border">
+                    <h3 class="card-title"><?= $Lang->get('FORUM__STATISTIC__TOPICCREATE') ?></h3>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
                             <div id="chart-bb-spline-nbmonth"></div>
@@ -184,11 +184,11 @@
 
     <div class="row">
         <div class="col-md-12">
-            <div class="box box-danger">
-                <div class="box-header with-border">
-                    <h3 class="box-title"><?= $Lang->get('FORUM__LAST__ACTIVITYS') ?></h3>
+            <div class="card card-danger">
+                <div class="card-header with-border">
+                    <h3 class="card-title"><?= $Lang->get('FORUM__LAST__ACTIVITYS') ?></h3>
                 </div>
-                <div class="box-body">
+                <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">
                             <table class="table table-bordered dataTable">

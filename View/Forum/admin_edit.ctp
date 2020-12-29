@@ -11,11 +11,11 @@
     <div class="row">
         <div class="col-md-12">
             <?php if($type == 'forum'): ?>
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><?= $Lang->get('FORUM__EDIT__FORUM') ?></h3>
+                <div class="card">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><?= $Lang->get('FORUM__EDIT__FORUM') ?></h3>
                     </div>
-                    <div class="box-body">
+                    <div class="card-body">
                         <script type="text/javascript">
                             function icone() {
                                 var html = '<div class="form-group">';
@@ -134,11 +134,11 @@
                     </div>
                 </div>
             <?php elseif ($type == 'category'): ?>
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><?= $Lang->get('FORUM__EDIT__CATEGORY') ?></h3>
+                <div class="card">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><?= $Lang->get('FORUM__EDIT__CATEGORY') ?></h3>
                     </div>
-                    <div class="box-body">
+                    <div class="card-body">
                         <script type="text/javascript">
                             function icone() {
                                 var html = '<div class="form-group">';
@@ -264,11 +264,11 @@
                     </div>
                 </div>
             <?php elseif ($type == 'user'): ?>
-                <div class="box box-primary">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><?= $Lang->get('FORUM__EDIT__USER') ?></h3>
+                <div class="card card-primary">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><?= $Lang->get('FORUM__EDIT__USER') ?></h3>
                     </div>
-                    <div class="box-body">
+                    <div class="card-body">
                         <form action="<?= $this->Html->url(array('controller' => 'forum', 'action' => 'admin_edit', 'admin' => true)) ?>" method="post" data-ajax="true" data-redirect="<?= $this->Html->url(array('controller' => 'forum', 'action' => 'admin_edit', 'admin' => true)) ?>">
                             <div class="ajax-msg"></div>
                             <div class="form-group">
@@ -341,11 +341,11 @@
                         </form>
                     </div>
                 </div>
-                <div class="box box-info">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><?= $Lang->get('FORUM__SOCIAL__STATS') ?></h3>
+                <div class="card card-info">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><?= $Lang->get('FORUM__SOCIAL__STATS') ?></h3>
                     </div>
-                    <div class="box-body">
+                    <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
                                 <div id="chart-bb-pie-thumbget"></div>
@@ -474,11 +474,11 @@
                         }
                     </script>
                 </div>
-                <div class="box box-success">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><?= $Lang->get('FORUM__SOCIAL__NETWORK') ?></h3>
+                <div class="card card-success">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><?= $Lang->get('FORUM__SOCIAL__NETWORK') ?></h3>
                     </div>
-                    <div class="box-body">
+                    <div class="card-body">
                         <form action="" method="post" data-ajax="true">
                             <div class="ajax-msg"></div>
                             <div class="form-group">
@@ -533,11 +533,11 @@
                         </form>
                     </div>
                 </div>
-                <div class="box box-danger">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><?= $Lang->get('FORUM__LAST__ACTIVITY') ?></h3>
+                <div class="card card-danger">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><?= $Lang->get('FORUM__LAST__ACTIVITY') ?></h3>
                     </div>
-                    <div class="box-body">
+                    <div class="card-body">
                         <table class="table table-responsive dataTable">
                             <thead>
                                 <tr>
@@ -562,12 +562,12 @@
                         </table>
                     </div>
                 </div>
-                <div class="box box-warning">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><?= $Lang->get('FORUM__LAST__REPORT') ?></h3>
+                <div class="card card-warning">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><?= $Lang->get('FORUM__LAST__REPORT') ?></h3>
                         <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <?= $Lang->get('FORUM__PHRASE__PAGE__ADMINEDIT_1'); ?></p>
                     </div>
-                    <div class="box-body">
+                    <div class="card-body">
                         <table class="table table-responsive dataTable">
                             <thead>
                                 <tr>
@@ -600,12 +600,12 @@
             </script>
             <?php elseif($type == 'rank'): ?>
                 <?= $this->Html->css('Forum.bootstrap-colorpicker.min.css'); ?>
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><?= $Lang->get('FORUM__EDIT__RANK') ?></h3>
+                <div class="card">
+                    <div class="card-header with-border">
+                        <h3 class="card-title"><?= $Lang->get('FORUM__EDIT__RANK') ?></h3>
                         <p class="pull-right"><a href="<?= $this->Html->url('/admin/forum/forum/rank'); ?>"><i class="fa fa-undo" aria-hidden="true"></i> <?= $Lang->get('FORUM__BACKTO__RANK'); ?></a></p>
                     </div>
-                    <div class="box-body">
+                    <div class="card-body">
                         <form action="<?= $this->Html->url(array('controller' => 'forum', 'action' => 'admin_edit', 'admin' => true)) ?>" method="post" data-ajax="true" data-redirect="<?= $this->Html->url(array('controller' => 'forum', 'action' => 'admin_edit', 'admin' => true)) ?>">
                             <div class="ajax-msg"></div>
                             <div class="form-group">
