@@ -6,11 +6,11 @@
     <?php if(!empty($alertforum['update'])) echo $alertforum['update']; ?>
     <div class="row">
         <div class="col-md-12">
-            <div class="card">
-                <div class="card-header with-border">
-                    <h3 class="card-title"><?= $Lang->get('FORUM__MSGREPORT') ?></h3>
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><?= $Lang->get('FORUM__MSGREPORT') ?></h3>
                 </div>
-                <div class="card-body">
+                <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
                             <table class="table table-responsive dataTable">

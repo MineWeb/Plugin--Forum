@@ -22,7 +22,7 @@
                                 <td><?= $topic['Topic']['author']; ?></td>
                                 <td><?= $topic['Topic']['date']; ?></td>
                                 <td class="right">
-                                    <a target="_blank" href="<?= $this->Html->url($topic['Topic']['href'].'/'); ?>" class="btn btn-primary"><i class="fa fa-external-link" aria-hidden="true"></i></a>
+                                    <a target="_blank" href="<?= $this->Html->url($topic['Topic']['href'].'/'); ?>" class="btn btn-primary"><i class="fas fa-external-link-alt"></i></a>
                                     <a data-toggle="modal" data-target="#modal-<?= $topic['Topic']['id_topic']; ?>" class="btn btn-info"><i class="fa fa-eye" aria-hidden="true"></i></a>
                                     <a onClick="confirmDel('<?= $this->Html->url(array('controller' => 'forum', 'action' => 'delete/topic/'.$topic['Topic']['id_topic'], 'admin' => true)) ?>')" class="btn btn-danger"><?= $Lang->get('GLOBAL__DELETE') ?></a>
                                 </td>

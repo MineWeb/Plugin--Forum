@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="fa fa-envelope-o"></i></span>
+                        <span class="info-box-icon bg-lightblue"><i class="fas fa-envelope"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text"><?= $Lang->get('FORUM__MSG'); ?><?php if($stats['total_msg'] > 1) echo 's'; ?></span>
                             <span class="info-box-number"><?= $stats['total_msg']; ?></span>
@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="info-box">
-                        <span class="info-box-icon bg-yellow"><i class="fa fa-file-o"></i></span>
+                        <span class="info-box-icon bg-yellow"><i class="fas fa-file-word"></i></span>
                         <div class="info-box-content">
                             <span class="info-box-text"><?= $Lang->get('FORUM__TOPIC'); ?><?php if($stats['total_topic'] > 1) echo 's'; ?></span>
                             <span class="info-box-number"><?= $stats['total_topic']; ?></span>
@@ -97,8 +97,10 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-body">
+                <div class="card-header">
                     <h3 class="card-title"><?= $Lang->get('FORUM__CONFIG') ?></h3>
+                </div>
+                <div class="card-body">
                     <form action="" method="post" data-ajax="true">
                         <input type="hidden" name="config" value="42" />
                         <div class="ajax-msg"></div>
@@ -126,7 +128,8 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="card-title"><?= $Lang->get('FORUM__CONFIG__INSTALL') ?></h3>
-                    <p style="color: #dc322f"><?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_5'); ?></p>
+                    <br>
+                    <em style="color: #dc322f"><?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_5'); ?></em>
                     <div class="row">
                         <div class="col-md-12">
                             <form action="" method="post" data-ajax="true">
@@ -150,7 +153,8 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="card-title"><?= $Lang->get('FORUM__CONFIG__HISTORY') ?></h3>
-                    <p><?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_6'); ?></p>
+                    <br>
+                    <em><?= $Lang->get('FORUM__PHRASE__PAGE__ADMININDEX_6'); ?></em>
                     <form action="" method="post" data-ajax="true">
                         <input type="hidden" name="drop" value="42" />
                         <div class="ajax-msg"></div>

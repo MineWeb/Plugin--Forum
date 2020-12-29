@@ -1,8 +1,6 @@
 <?= $this->Html->css('Forum.forum-style.css') ?>
 <?=  $this->Html->css('Forum.bootstrap-colorpicker.min.css'); ?>
-<?=  $this->Html->css('Forum.font-awesome.min.css'); ?>
 <?= $this->Html->css('Forum.select2.min.css'); ?>
-<?= $this->Html->css('AdminLTE.min.css'); ?>
 
 <section class="content">
     <div class="row">
