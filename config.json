@@ -1,5 +1,5 @@
 {
-  "name":"Forum",
+  "name": "Forum",
   "admin_menus": {
     "Forum": {
       "index": 3,
@@ -9,96 +9,96 @@
           "icon": "home",
           "route": "/admin/forum"
         },
-		"Gestion du contenu": {
-			"index":"1",
-			"icon": "list",
-			"menu": {
-				"Gérer les forums": {
-				  "icon": "list",
-				  "route": "/admin/forum/forum/forum"
-				},
-				"Gérer les catégories": {
-				  "icon": "list",
-				  "route": "/admin/forum/forum/category"
-				},
-				"Gérer les topics": {
-				  "icon": "commenting",
-				  "route": "/admin/forum/forum/topic"
-				},
-				"Gérer les tags": {
-				  "icon": "tags",
-				  "route": "/admin/forum/forum/tag"
-				}
-			}
-		},
-		"Utilisateurs et permissions": {
-			"index":"2",
-			"icon": "users",
-			"menu": {
-				"Gérer les utilisateurs": {
-				  "icon": "users",
-				  "route": "/admin/forum/forum/user"
-				},
-				"Gérer les grades": {
-				  "icon": "users",
-				  "route": "/admin/forum/forum/rank"
-				},
-				"Gérer les permissions": {
-				  "icon": "users",
-				  "route": "/admin/forum/forum/permission"
-				}
-			}
-		},
-		"Modération": {
-			"index":"3",
-			"icon": "ban",
-			"menu": {
-				"Gérer les mots interdits": {
-				  "icon": "quote-left",
-				  "route": "/admin/forum/forum/word"
-				},
-				"Gérer les sanctions": {
-				  "icon": "times",
-				  "route": "/admin/forum/forum/punishment"
-				},
-				"Message signalé": {
-				  "icon": "times",
-				  "route": "/admin/forum/forum/report"
-				}
-			}
-		},
-		"Personnalisation": {
-            "index":"4",
-            "icon": "paint-brush",
-            "menu": {
-                "Général": {
-                    "icon": "home",
-                    "route": "/admin/forum/forum/personalize/home"
-                },
-				"Forum": {
-					"icon": "list",
-					"route": "/admin/forum/forum/personalize/forum"
-				}
+        "Gestion du contenu": {
+          "index": "1",
+          "icon": "list",
+          "menu": {
+            "Gérer les forums": {
+              "icon": "list",
+              "route": "/admin/forum/forum/forum"
+            },
+            "Gérer les catégories": {
+              "icon": "list",
+              "route": "/admin/forum/forum/category"
+            },
+            "Gérer les topics": {
+              "icon": "commenting",
+              "route": "/admin/forum/forum/topic"
+            },
+            "Gérer les tags": {
+              "icon": "tags",
+              "route": "/admin/forum/forum/tag"
             }
-		},
+          }
+        },
+        "Utilisateurs et permissions": {
+          "index": "2",
+          "icon": "users",
+          "menu": {
+            "Gérer les utilisateurs": {
+              "icon": "users",
+              "route": "/admin/forum/forum/user"
+            },
+            "Gérer les grades": {
+              "icon": "users",
+              "route": "/admin/forum/forum/rank"
+            },
+            "Gérer les permissions": {
+              "icon": "users",
+              "route": "/admin/forum/forum/permission"
+            }
+          }
+        },
+        "Modération": {
+          "index": "3",
+          "icon": "ban",
+          "menu": {
+            "Gérer les mots interdits": {
+              "icon": "quote-left",
+              "route": "/admin/forum/forum/word"
+            },
+            "Gérer les sanctions": {
+              "icon": "times",
+              "route": "/admin/forum/forum/punishment"
+            },
+            "Message signalé": {
+              "icon": "times",
+              "route": "/admin/forum/forum/report"
+            }
+          }
+        },
+        "Personnalisation": {
+          "index": "4",
+          "icon": "paint-brush",
+          "menu": {
+            "Général": {
+              "icon": "home",
+              "route": "/admin/forum/forum/personalize/home"
+            },
+            "Forum": {
+              "icon": "list",
+              "route": "/admin/forum/forum/personalize/forum"
+            }
+          }
+        },
         "Statistiques": {
-			"index":"5",
-			"icon": "area-chart",
-			"menu": {
-				"Statistiques": {
-				  "icon": "area-chart",
-				  "route": "/admin/forum/forum/stats"
-				},
-				"Classement": {
-					"icon": "line-chart",
-					"route": "/admin/forum/forum/stats_top"
-				}
-			}
-		},
-		"Cache": {
-			"icon": "database",
-			"route": "/admin/forum/forum/cache"
-		},
+          "index": "5",
+          "icon": "area-chart",
+          "menu": {
+            "Statistiques": {
+              "icon": "area-chart",
+              "route": "/admin/forum/forum/stats"
+            },
+            "Classement": {
+              "icon": "line-chart",
+              "route": "/admin/forum/forum/stats_top"
+            }
+          }
+        },
+        "Cache": {
+          "icon": "database",
+          "route": "/admin/forum/forum/cache"
+        },
         "Log du forum": {
           "icon": "history",
           "route": "/admin/forum/forum/history"
@@ -107,28 +107,28 @@
           "icon": "hdd-o",
           "route": "/admin/forum/forum/backup"
         },
-		"Aide": {
-		  "icon": "question-circle",
-		  "route": "/admin/forum/forum/help"
-		}
+        "Aide": {
+          "icon": "question-circle",
+          "route": "/admin/forum/forum/help"
+        }
       }
     }
   },
   "navbar_routes": {
     "Forum": "/forum"
   },
-  "author":"PHPierre",
-  "version":"1.4.7",
-  "apiID":-1,
-  "useEvents":false,
-  "permissions" : {
-    "available" : [],
-    "default" : {
-      "0" : [],
-      "2" : []
+  "author": "PHPierre",
+  "version": "1.5.0",
+  "apiID": -1,
+  "useEvents": false,
+  "permissions": {
+    "available": [],
+    "default": {
+      "0": [],
+      "2": []
     }
   },
-  "requirements" : {
-    "CMS" : "^1.2.0"
+  "requirements": {
+    "CMS": "^1.11.0"
   }
 }
