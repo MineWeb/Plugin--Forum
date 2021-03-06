@@ -19,8 +19,8 @@
  *
  * app\Controller\Component\StatisticsComponent.php:76
  * if (php_sapi_name() == "cli") {
-+       return;
-+  }
+ * +       return;
+ * +  }
  */
 
 App::uses('Controller', 'Controller');
@@ -29,6 +29,7 @@ App::uses('View', 'View');
 App::uses('AppController', 'AppController');
 App::uses('ForumAppController', 'Forum.ForumAppController');
 App::uses('ForumController', 'Forum.ForumController');
+
 class PageStatusTest extends ControllerTestCase
 {
     /**
@@ -41,7 +42,8 @@ class PageStatusTest extends ControllerTestCase
      */
     private $View;
 
-    public function setUp() {
+    public function setUp()
+    {
         parent::setUp();
 
         $this->Controller = new Controller();
@@ -54,7 +56,7 @@ class PageStatusTest extends ControllerTestCase
             'return' => 'contents'
         ]);
 
-        $this->assertContains('forum-breadcrumb-home' ,$result);
+        $this->assertContains('forum-breadcrumb-home', $result);
     }
 
 }

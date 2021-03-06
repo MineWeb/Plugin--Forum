@@ -1,7 +1,6 @@
 {
   "FORUM__TITLE": "Forum",
   "FORUM__FORUMS": "Forums",
-
   "FORUM__PERMISSION_NECESSARY": "Vous n'avez pas la permission de faire cela",
   "FORUM__SWITCH": "Switch",
   "FORUM__FIRST__POSITION": "Première position",
@@ -94,11 +93,11 @@
   "FORUM__USEDBY": "Utilisable par :",
   "FORUM__ALL": "Tous",
   "FORUM__SOCIAL__NETWORK": "Réseaux sociaux",
-  "FORUM__SOCIAL__FACEBOOK":"Facebook",
-  "FORUM__SOCIAL__TWITTER":"Twitter",
-  "FORUM__SOCIAL__YOUTUBE":"Youtube",
-  "FORUM__SOCIAL__GOOGLEPLUS":"Google +",
-  "FORUM__SOCIAL__SNAPCHAT":"Snapchat",
+  "FORUM__SOCIAL__FACEBOOK": "Facebook",
+  "FORUM__SOCIAL__TWITTER": "Twitter",
+  "FORUM__SOCIAL__YOUTUBE": "Youtube",
+  "FORUM__SOCIAL__GOOGLEPLUS": "Google +",
+  "FORUM__SOCIAL__SNAPCHAT": "Snapchat",
   "FORUM__CREATE__BACKUP": "Créer une sauvegarde",
   "FORUM__DELETEALL__BACKUP": "Supprimer toutes les sauvegardes",
   "FORUM__ONLINE__ZERO": "Aucun utilisateur en ligne actuellement",
@@ -109,8 +108,8 @@
   "FORUM__SOCIAL__STATS": "Statistiques",
   "FORUM__USER__REGISTERED__TODAY": "Visites d'utilisateurs",
   "FORUM__USER__REGISTERED__TODAY__S": "Visite d'utilisateur",
-  "FORUM__MP":"Message privé",
-  "FORUM__MPS":"Messages privés",
+  "FORUM__MP": "Message privé",
+  "FORUM__MPS": "Messages privés",
   "FORUM__ISBANNED": "Utilisateur banni ?",
   "FORUM__ISAVAILAVLE": " est disponible",
   "FORUM__MANAGE__ICONS": "Gestion des icônes",
@@ -150,7 +149,6 @@
   "FORUM__TECHNICAL__NAME": "Nom technique",
   "FORUM__NEED__HELP": "Besoin d'aide ?",
   "FORUM__INPUTSIZE_LIMIT": "Vous avez atteint la limite du nombre de caractères.",
-
   "FORUM__GENERAL": "Gestion du forum",
   "FORUM__CATEGORY": "Gestion des catégories",
   "FORUM__CONFIG": "Configuration du forum",
@@ -163,7 +161,6 @@
   "FORUM__PUNISHMENT": "Gestion des punitions",
   "FORUM__BANNED": "Vous avez été banni(e)",
   "FORUM__BACKUPS": "Gestionnaire des sauvegardes",
-
   "FORUM__ADD__FORUM": "Ajouter un forum",
   "FORUM__ADD__SUCCESS": "Étape réalisée avec succès",
   "FORUM__ADD__FAILED": "Un champ du formulaire n'est pas correctement rempli",
@@ -176,7 +173,6 @@
   "FORUM__ADD__USERUNKNOW": "Utilisateur inconnu",
   "FORUM__ADD__BACKUP": "La sauvegarde a bien été créée",
   "FORUM__ADD__LABEL": "Le label a bien été créé",
-
   "FORUM__EDIT__FORUM": "Éditer un forum",
   "FORUM__EDIT__USER": "Éditer un utilisateur",
   "FORUM__EDIT__MYPROFILE": "Éditer mon profil",
@@ -185,7 +181,6 @@
   "FORUM__USER__EDIT": "L'utilisateur a été modifié",
   "FORUM__EDIT__CATEGORY": "Éditer une catégorie",
   "FORUM__EDIT__RANK": "Éditer un groupe",
-
   "FORUM__CONFIG__USERONLINE": "Utilisateurs en ligne",
   "FORUM__CONFIG__STATS": "Statistiques",
   "FORUM__CONFIG__PRIVATEMSG": "Messages privés",
@@ -195,19 +190,16 @@
   "FORUM__CONFIG__HISTORY": "Vider l'historique",
   "FORUM__CONFIG__INSTALL": "Installer la configuration de base du forum",
   "FORUM__CONFIG__INSTALLED": "La configuration a bien été installée",
-
   "FORUM__MESSAGE__DELETE": "Votre message a bien été supprimé",
-
   "FORUM__HISTORY__DROP": "L'historique a été vidé",
   "FORUM__TOPIC__MESSAGE_ERROR": "Votre message ne peut pas être vide",
   "FORUM__MESSAGE__EDITED": "Votre message à bien été édité",
   "FORUM__MESSAGE__SEND": "Votre message à bien été envoyé",
   "FORUM__REPORT__SEND": "Votre signalement à bien été envoyé",
-  "FORUM__PERMISSION__EXIST":"Cette permission existe déjà",
+  "FORUM__PERMISSION__EXIST": "Cette permission existe déjà",
   "FORUM__PERMISSION__ADD": "Votre permission a été ajoutée",
   "FORUM__BACKUP__INCOMPATIBLE": "Votre hébergeur est incompatible avec cette fonction",
   "FORUM__BACKUP__INCOMPATIBLE__MORE": "Cette fonctionnalité a besoin de la fonction PHP exec() celle-ci n'est disponible que sur les machines dédiées comme les VPS.",
-
   "FORUM_MP_SEND__PERM": "Envoyer des messages privés",
   "FORUM_MP_REPLY__PERM": "Répondre aux messages privés",
   "FORUM_TOPIC_SEND__PERM": "Poster des topics",
@@ -234,10 +226,8 @@
   "FORUM_CREATE_POLL__PERM": "Ajouter un sondage à son topic (non-disponible)",
   "FORUM_USE_PUNISHMENT__PERM": "Appliquer des sanctions pré-configuré (modération) (non-disponible)",
   "FORUM_TAG_USER__PERM": "Taguer les utilisateurs dans ses messages (non-disponible)",
-
   "FORUM__INSTALL__DEFAULT": "Config par défault",
   "FORUM__INSTALL__RESET": "Config vide",
-
   "FORUM__PHRASE__PROFILE__GREENTHUMB": " a mit un pouce vert au message suivant : ",
   "FORUM__PHRASE__PROFILE__REDTHUMB": " a mit un pouce rouge au message suivant : ",
   "FORUM__PHRASE__HISTORY__ADD__THUMB": " retire son appréciation au message : ",
@@ -282,10 +272,9 @@
   "FORUM__PHRASE__LASTFEEDBACK": "Dernières appréciations",
   "FORUM__PHRASE__PAGE__ADMINEDIT_1": "Ce sont les messages signalés par cet utilisateur",
   "FORUM__PHRASE__PAGE__ADDTOPIC_1": "Le titre est très important, car il est utilisé pour déterminer l'url, veillez donc à utiliser un titre cohérant.",
-  "FORUM__ADMIN__TIPS_1":"(Si aucune case n'est cochée, la catégorie sera visible par tous)",
+  "FORUM__ADMIN__TIPS_1": "(Si aucune case n'est cochée, la catégorie sera visible par tous)",
   "FORUM__PERMS__WARNING": "Vérifiez bien les permissions pour les sous-catégories, celles-ci dépendent du forum parent et non de la catégorie parente",
   "FORUM__CACHE__EXPLANATION": "Le cache du forum est un système permettant d'améliorer la rapidité du forum en stockant des données de calcul. Si le cache est activé, certaines valeurs seront fixes malgré l'activité des utilisateurs. <br />Cette fonctionnalité est destinée aux gros forums possédant plusieurs milliers de topics. Si vous possédez peu de topic, elle gênera plus vos utilisateurs.",
-
   "FORUM__RANK__BASIC": "Membre",
   "FORUM__TOPIC__LOCK": "Le topic a bien été verrouillé",
   "FORUM__TOPIC__UNLOCK": "Le topic a bien été déverrouillé",
@@ -297,10 +286,8 @@
   "FORUM__LAST__ACTIVITYS": "Dernières activités",
   "FORUM__TOPIC__CREATE": "Créer un topic",
   "FORUM__VIEW_EXAMPLE": "Voir un exemple",
-
-  "FORUM__API__ONLINEUSER__DENIED":"Impossible d'utiliser la fonction getOnlineUsers de l'API forum, car celle-ci est désactivée par l'administrateur du site.",
-  "FORUM__API__STATS__DENIED":"Impossible d'utiliser la fonction getOnlineUsers de l'API forum, car celle-ci est désactivée par l'administrateur du site.",
-
+  "FORUM__API__ONLINEUSER__DENIED": "Impossible d'utiliser la fonction getOnlineUsers de l'API forum, car celle-ci est désactivée par l'administrateur du site.",
+  "FORUM__API__STATS__DENIED": "Impossible d'utiliser la fonction getOnlineUsers de l'API forum, car celle-ci est désactivée par l'administrateur du site.",
   "FORUM__NOTIFICATION__MESSAGE_RESPONSE": " vient de répondre à votre topic intitulé « [TITLE] »",
   "FORUM__NOTIFICATION__MP__SEND": " vient de vous envoyer un message privé",
   "FORUM__NOTIFICATION__MP__RESPONSE": " vient de vous répondre par message privé",
@@ -309,7 +296,6 @@
   "FORUM__NOTIFICATION__TOPIC__STICK": "Votre topic « [TITLE] » vient d'être mis en avant par ",
   "FORUM__NOTIFICATION__TOPIC__LOCK": "Votre topic « [TITLE] » vient d'être verrouillé par ",
   "FORUM__NOTIFICATION__TOPIC__UNLOCK": "Votre topic « [TITLE] » vient d'être déverrouillé par ",
-
   "FORUM__STATISTIC__VIEWTOPIC": "Nombre de topics vus",
   "FORUM__STATISTIC__TOPICCREATE": "Nombre de topics créés"
 }
