@@ -79,8 +79,8 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
         // Based off of RFC 1738, but amended so that
         // as per RFC 3696, the top label need only not be all numeric.
         // The productions describing this are:
-        $a   = '[a-z]';     // alpha
-        $an  = '[a-z0-9]';  // alphanum
+        $a = '[a-z]';     // alpha
+        $an = '[a-z0-9]';  // alphanum
         $and = "[a-z0-9-$underscore]"; // alphanum | "-"
         // domainlabel = alphanum | alphanum *( alphanum | "-" ) alphanum
         $domainlabel = "$an(?:$and*$an)?";
@@ -103,9 +103,9 @@ class HTMLPurifier_AttrDef_URI_Host extends HTMLPurifier_AttrDef
                 $string = idn_to_ascii($string);
             }
 
-        // If we have Net_IDNA2 support, we can support IRIs by
-        // punycoding them. (This is the most portable thing to do,
-        // since otherwise we have to assume browsers support
+            // If we have Net_IDNA2 support, we can support IRIs by
+            // punycoding them. (This is the most portable thing to do,
+            // since otherwise we have to assume browsers support
         } elseif ($config->get('Core.EnableIDNA')) {
             $idna = new Net_IDNA2(array('encoding' => 'utf8', 'overlong' => false, 'strict' => true));
             // we need to encode each period separately

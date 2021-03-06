@@ -53,28 +53,6 @@ class HTMLPurifier_StringHashParser
     }
 
     /**
-     * Parses a file that contains multiple string-hashes delimited by '----'
-     * @param string $file
-     * @return array
-     */
-    public function parseMultiFile($file)
-    {
-        if (!file_exists($file)) {
-            return false;
-        }
-        $ret = array();
-        $fh = fopen($file, 'r');
-        if (!$fh) {
-            return false;
-        }
-        while (!feof($fh)) {
-            $ret[] = $this->parseHandle($fh);
-        }
-        fclose($fh);
-        return $ret;
-    }
-
-    /**
      * Internal parser that acepts a file handle.
      * @note While it's possible to simulate in-memory parsing by using
      *       custom stream wrappers, if such a use-case arises we should
@@ -85,9 +63,9 @@ class HTMLPurifier_StringHashParser
      */
     protected function parseHandle($fh)
     {
-        $state   = false;
-        $single  = false;
-        $ret     = array();
+        $state = false;
+        $single = false;
+        $ret = array();
         do {
             $line = fgets($fh);
             if ($line === false) {
@@ -118,17 +96,39 @@ class HTMLPurifier_StringHashParser
                     $line = trim($line);
                 } else {
                     // Use default declaration
-                    $state  = $this->default;
+                    $state = $this->default;
                 }
             }
             if ($single) {
                 $ret[$state] = $line;
                 $single = false;
-                $state  = false;
+                $state = false;
             } else {
                 $ret[$state] .= "$line\n";
             }
         } while (!feof($fh));
+        return $ret;
+    }
+
+    /**
+     * Parses a file that contains multiple string-hashes delimited by '----'
+     * @param string $file
+     * @return array
+     */
+    public function parseMultiFile($file)
+    {
+        if (!file_exists($file)) {
+            return false;
+        }
+        $ret = array();
+        $fh = fopen($file, 'r');
+        if (!$fh) {
+            return false;
+        }
+        while (!feof($fh)) {
+            $ret[] = $this->parseHandle($fh);
+        }
+        fclose($fh);
         return $ret;
     }
 }

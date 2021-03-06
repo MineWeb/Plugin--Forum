@@ -6,25 +6,21 @@
 class HTMLPurifier_ChildDef_StrictBlockquote extends HTMLPurifier_ChildDef_Required
 {
     /**
-     * @type array
-     */
-    protected $real_elements;
-
-    /**
-     * @type array
-     */
-    protected $fake_elements;
-
-    /**
      * @type bool
      */
     public $allow_empty = true;
-
     /**
      * @type string
      */
     public $type = 'strictblockquote';
-
+    /**
+     * @type array
+     */
+    protected $real_elements;
+    /**
+     * @type array
+     */
+    protected $fake_elements;
     /**
      * @type bool
      */
@@ -40,6 +36,21 @@ class HTMLPurifier_ChildDef_StrictBlockquote extends HTMLPurifier_ChildDef_Requi
     {
         $this->init($config);
         return $this->fake_elements;
+    }
+
+    /**
+     * @param HTMLPurifier_Config $config
+     */
+    private function init($config)
+    {
+        if (!$this->init) {
+            $def = $config->getHTMLDefinition();
+            // allow all inline elements
+            $this->real_elements = $this->elements;
+            $this->fake_elements = $def->info_content_sets['Flow'];
+            $this->fake_elements['#PCDATA'] = true;
+            $this->init = true;
+        }
     }
 
     /**
@@ -73,8 +84,8 @@ class HTMLPurifier_ChildDef_StrictBlockquote extends HTMLPurifier_ChildDef_Requi
             if ($block_wrap === false) {
                 if (($node instanceof HTMLPurifier_Node_Text && !$node->is_whitespace) ||
                     ($node instanceof HTMLPurifier_Node_Element && !isset($this->elements[$node->name]))) {
-                        $block_wrap = new HTMLPurifier_Node_Element($def->info_block_wrapper);
-                        $ret[] = $block_wrap;
+                    $block_wrap = new HTMLPurifier_Node_Element($def->info_block_wrapper);
+                    $ret[] = $block_wrap;
                 }
             } else {
                 if ($node instanceof HTMLPurifier_Node_Element && isset($this->elements[$node->name])) {
@@ -89,21 +100,6 @@ class HTMLPurifier_ChildDef_StrictBlockquote extends HTMLPurifier_ChildDef_Requi
             }
         }
         return $ret;
-    }
-
-    /**
-     * @param HTMLPurifier_Config $config
-     */
-    private function init($config)
-    {
-        if (!$this->init) {
-            $def = $config->getHTMLDefinition();
-            // allow all inline elements
-            $this->real_elements = $this->elements;
-            $this->fake_elements = $def->info_content_sets['Flow'];
-            $this->fake_elements['#PCDATA'] = true;
-            $this->init = true;
-        }
     }
 }
 

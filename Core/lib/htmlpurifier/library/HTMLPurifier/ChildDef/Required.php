@@ -10,7 +10,14 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
      * @type array
      */
     public $elements = array();
-
+    /**
+     * @type bool
+     */
+    public $allow_empty = false;
+    /**
+     * @type string
+     */
+    public $type = 'required';
     /**
      * Whether or not the last passed node was all whitespace.
      * @type bool
@@ -38,16 +45,6 @@ class HTMLPurifier_ChildDef_Required extends HTMLPurifier_ChildDef
         }
         $this->elements = $elements;
     }
-
-    /**
-     * @type bool
-     */
-    public $allow_empty = false;
-
-    /**
-     * @type string
-     */
-    public $type = 'required';
 
     /**
      * @param array $children

@@ -21,14 +21,6 @@ class HTMLPurifier_DefinitionCacheFactory
     protected $decorators = array();
 
     /**
-     * Initialize default decorators
-     */
-    public function setup()
-    {
-        $this->addDecorator('Cleanup');
-    }
-
-    /**
      * Retrieves an instance of global definition cache factory.
      * @param HTMLPurifier_DefinitionCacheFactory $prototype
      * @return HTMLPurifier_DefinitionCacheFactory
@@ -43,6 +35,27 @@ class HTMLPurifier_DefinitionCacheFactory
             $instance->setup();
         }
         return $instance;
+    }
+
+    /**
+     * Initialize default decorators
+     */
+    public function setup()
+    {
+        $this->addDecorator('Cleanup');
+    }
+
+    /**
+     * Registers a decorator to add to all new cache objects
+     * @param HTMLPurifier_DefinitionCache_Decorator|string $decorator An instance or the name of a decorator
+     */
+    public function addDecorator($decorator)
+    {
+        if (is_string($decorator)) {
+            $class = "HTMLPurifier_DefinitionCache_Decorator_$decorator";
+            $decorator = new $class;
+        }
+        $this->decorators[$decorator->name] = $decorator;
     }
 
     /**
@@ -87,19 +100,6 @@ class HTMLPurifier_DefinitionCacheFactory
         }
         $this->caches[$method][$type] = $cache;
         return $this->caches[$method][$type];
-    }
-
-    /**
-     * Registers a decorator to add to all new cache objects
-     * @param HTMLPurifier_DefinitionCache_Decorator|string $decorator An instance or the name of a decorator
-     */
-    public function addDecorator($decorator)
-    {
-        if (is_string($decorator)) {
-            $class = "HTMLPurifier_DefinitionCache_Decorator_$decorator";
-            $decorator = new $class;
-        }
-        $this->decorators[$decorator->name] = $decorator;
     }
 }
 

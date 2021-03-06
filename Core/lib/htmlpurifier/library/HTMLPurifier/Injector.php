@@ -21,31 +21,6 @@ abstract class HTMLPurifier_Injector
      * @type string
      */
     public $name;
-
-    /**
-     * @type HTMLPurifier_HTMLDefinition
-     */
-    protected $htmlDefinition;
-
-    /**
-     * Reference to CurrentNesting variable in Context. This is an array
-     * list of tokens that we are currently "inside"
-     * @type array
-     */
-    protected $currentNesting;
-
-    /**
-     * Reference to current token.
-     * @type HTMLPurifier_Token
-     */
-    protected $currentToken;
-
-    /**
-     * Reference to InputZipper variable in Context.
-     * @type HTMLPurifier_Zipper
-     */
-    protected $inputZipper;
-
     /**
      * Array of elements and attributes this injector creates and therefore
      * need to be allowed by the definition. Takes form of
@@ -53,7 +28,26 @@ abstract class HTMLPurifier_Injector
      * @type array
      */
     public $needed = array();
-
+    /**
+     * @type HTMLPurifier_HTMLDefinition
+     */
+    protected $htmlDefinition;
+    /**
+     * Reference to CurrentNesting variable in Context. This is an array
+     * list of tokens that we are currently "inside"
+     * @type array
+     */
+    protected $currentNesting;
+    /**
+     * Reference to current token.
+     * @type HTMLPurifier_Token
+     */
+    protected $currentToken;
+    /**
+     * Reference to InputZipper variable in Context.
+     * @type HTMLPurifier_Zipper
+     */
+    protected $inputZipper;
     /**
      * Number of elements to rewind backwards (relative).
      * @type bool|int
@@ -105,8 +99,8 @@ abstract class HTMLPurifier_Injector
             return $result;
         }
         $this->currentNesting =& $context->get('CurrentNesting');
-        $this->currentToken   =& $context->get('CurrentToken');
-        $this->inputZipper    =& $context->get('InputZipper');
+        $this->currentToken =& $context->get('CurrentToken');
+        $this->inputZipper =& $context->get('InputZipper');
         return false;
     }
 
@@ -160,90 +154,12 @@ abstract class HTMLPurifier_Injector
         if (!empty($this->currentNesting)) {
             for ($i = count($this->currentNesting) - 2; $i >= 0; $i--) {
                 $node = $this->currentNesting[$i];
-                $def  = $this->htmlDefinition->info[$node->name];
+                $def = $this->htmlDefinition->info[$node->name];
                 if (isset($def->excludes[$name])) {
                     return false;
                 }
             }
         }
-        return true;
-    }
-
-    /**
-     * Iterator function, which starts with the next token and continues until
-     * you reach the end of the input tokens.
-     * @warning Please prevent previous references from interfering with this
-     *          functions by setting $i = null beforehand!
-     * @param int $i Current integer index variable for inputTokens
-     * @param HTMLPurifier_Token $current Current token variable.
-     *          Do NOT use $token, as that variable is also a reference
-     * @return bool
-     */
-    protected function forward(&$i, &$current)
-    {
-        if ($i === null) {
-            $i = count($this->inputZipper->back) - 1;
-        } else {
-            $i--;
-        }
-        if ($i < 0) {
-            return false;
-        }
-        $current = $this->inputZipper->back[$i];
-        return true;
-    }
-
-    /**
-     * Similar to _forward, but accepts a third parameter $nesting (which
-     * should be initialized at 0) and stops when we hit the end tag
-     * for the node $this->inputIndex starts in.
-     * @param int $i Current integer index variable for inputTokens
-     * @param HTMLPurifier_Token $current Current token variable.
-     *          Do NOT use $token, as that variable is also a reference
-     * @param int $nesting
-     * @return bool
-     */
-    protected function forwardUntilEndToken(&$i, &$current, &$nesting)
-    {
-        $result = $this->forward($i, $current);
-        if (!$result) {
-            return false;
-        }
-        if ($nesting === null) {
-            $nesting = 0;
-        }
-        if ($current instanceof HTMLPurifier_Token_Start) {
-            $nesting++;
-        } elseif ($current instanceof HTMLPurifier_Token_End) {
-            if ($nesting <= 0) {
-                return false;
-            }
-            $nesting--;
-        }
-        return true;
-    }
-
-    /**
-     * Iterator function, starts with the previous token and continues until
-     * you reach the beginning of input tokens.
-     * @warning Please prevent previous references from interfering with this
-     *          functions by setting $i = null beforehand!
-     * @param int $i Current integer index variable for inputTokens
-     * @param HTMLPurifier_Token $current Current token variable.
-     *          Do NOT use $token, as that variable is also a reference
-     * @return bool
-     */
-    protected function backward(&$i, &$current)
-    {
-        if ($i === null) {
-            $i = count($this->inputZipper->front) - 1;
-        } else {
-            $i--;
-        }
-        if ($i < 0) {
-            return false;
-        }
-        $current = $this->inputZipper->front[$i];
         return true;
     }
 
@@ -277,6 +193,84 @@ abstract class HTMLPurifier_Injector
      */
     public function notifyEnd($token)
     {
+    }
+
+    /**
+     * Similar to _forward, but accepts a third parameter $nesting (which
+     * should be initialized at 0) and stops when we hit the end tag
+     * for the node $this->inputIndex starts in.
+     * @param int $i Current integer index variable for inputTokens
+     * @param HTMLPurifier_Token $current Current token variable.
+     *          Do NOT use $token, as that variable is also a reference
+     * @param int $nesting
+     * @return bool
+     */
+    protected function forwardUntilEndToken(&$i, &$current, &$nesting)
+    {
+        $result = $this->forward($i, $current);
+        if (!$result) {
+            return false;
+        }
+        if ($nesting === null) {
+            $nesting = 0;
+        }
+        if ($current instanceof HTMLPurifier_Token_Start) {
+            $nesting++;
+        } elseif ($current instanceof HTMLPurifier_Token_End) {
+            if ($nesting <= 0) {
+                return false;
+            }
+            $nesting--;
+        }
+        return true;
+    }
+
+    /**
+     * Iterator function, which starts with the next token and continues until
+     * you reach the end of the input tokens.
+     * @warning Please prevent previous references from interfering with this
+     *          functions by setting $i = null beforehand!
+     * @param int $i Current integer index variable for inputTokens
+     * @param HTMLPurifier_Token $current Current token variable.
+     *          Do NOT use $token, as that variable is also a reference
+     * @return bool
+     */
+    protected function forward(&$i, &$current)
+    {
+        if ($i === null) {
+            $i = count($this->inputZipper->back) - 1;
+        } else {
+            $i--;
+        }
+        if ($i < 0) {
+            return false;
+        }
+        $current = $this->inputZipper->back[$i];
+        return true;
+    }
+
+    /**
+     * Iterator function, starts with the previous token and continues until
+     * you reach the beginning of input tokens.
+     * @warning Please prevent previous references from interfering with this
+     *          functions by setting $i = null beforehand!
+     * @param int $i Current integer index variable for inputTokens
+     * @param HTMLPurifier_Token $current Current token variable.
+     *          Do NOT use $token, as that variable is also a reference
+     * @return bool
+     */
+    protected function backward(&$i, &$current)
+    {
+        if ($i === null) {
+            $i = count($this->inputZipper->front) - 1;
+        } else {
+            $i--;
+        }
+        if ($i < 0) {
+            return false;
+        }
+        $current = $this->inputZipper->front[$i];
+        return true;
     }
 }
 

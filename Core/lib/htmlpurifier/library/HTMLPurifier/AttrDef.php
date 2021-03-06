@@ -89,10 +89,10 @@ abstract class HTMLPurifier_AttrDef
         $p = '\s*(\d+(\.\d+)?([%]?))\s*';
 
         if (preg_match('/(rgba|hsla)\(/', $string)) {
-            return preg_replace('/(rgba|hsla)\('.$p.','.$p.','.$p.','.$p.'\)/', '\1(\2,\5,\8,\11)', $string);
+            return preg_replace('/(rgba|hsla)\(' . $p . ',' . $p . ',' . $p . ',' . $p . '\)/', '\1(\2,\5,\8,\11)', $string);
         }
 
-        return preg_replace('/(rgb|hsl)\('.$p.','.$p.','.$p.'\)/', '\1(\2,\5,\8)', $string);
+        return preg_replace('/(rgb|hsl)\(' . $p . ',' . $p . ',' . $p . '\)/', '\1(\2,\5,\8)', $string);
     }
 
     /**

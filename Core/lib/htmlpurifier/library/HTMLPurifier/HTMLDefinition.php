@@ -98,8 +98,24 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
     public $doctype;
 
 
-
     // RAW CUSTOMIZATION STUFF --------------------------------------------
+    /**
+     * @type string
+     */
+    public $type = 'HTML';
+    /**
+     * @type HTMLPurifier_HTMLModuleManager
+     */
+    public $manager;
+    private $_anonModule = null;
+
+    /**
+     * Performs low-cost, preliminary initialization.
+     */
+    public function __construct()
+    {
+        $this->manager = new HTMLPurifier_HTMLModuleManager();
+    }
 
     /**
      * Adds a custom attribute to a pre-existing element
@@ -119,6 +135,23 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
             $element = $module->info[$element_name];
         }
         $element->attr[$attr_name] = $def;
+    }
+
+    // PUBLIC BUT INTERNAL VARIABLES --------------------------------------
+
+    /**
+     * Retrieves a reference to the anonymous module, so you can
+     * bust out advanced features without having to make your own
+     * module.
+     * @return HTMLPurifier_HTMLModule
+     */
+    public function getAnonymousModule()
+    {
+        if (!$this->_anonModule) {
+            $this->_anonModule = new HTMLPurifier_HTMLModule();
+            $this->_anonModule->name = 'Anonymous';
+        }
+        return $this->_anonModule;
     }
 
     /**
@@ -145,46 +178,9 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
      */
     public function addBlankElement($element_name)
     {
-        $module  = $this->getAnonymousModule();
+        $module = $this->getAnonymousModule();
         $element = $module->addBlankElement($element_name);
         return $element;
-    }
-
-    /**
-     * Retrieves a reference to the anonymous module, so you can
-     * bust out advanced features without having to make your own
-     * module.
-     * @return HTMLPurifier_HTMLModule
-     */
-    public function getAnonymousModule()
-    {
-        if (!$this->_anonModule) {
-            $this->_anonModule = new HTMLPurifier_HTMLModule();
-            $this->_anonModule->name = 'Anonymous';
-        }
-        return $this->_anonModule;
-    }
-
-    private $_anonModule = null;
-
-    // PUBLIC BUT INTERNAL VARIABLES --------------------------------------
-
-    /**
-     * @type string
-     */
-    public $type = 'HTML';
-
-    /**
-     * @type HTMLPurifier_HTMLModuleManager
-     */
-    public $manager;
-
-    /**
-     * Performs low-cost, preliminary initialization.
-     */
-    public function __construct()
-    {
-        $this->manager = new HTMLPurifier_HTMLModuleManager();
     }
 
     /**
@@ -381,11 +377,11 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
                             }
                             break;
                         }
-                        // otherwise fall through
+                    // otherwise fall through
                     case 1:
                         $attribute = htmlspecialchars($bits[0]);
                         trigger_error(
-                            "Global attribute '$attribute' is not ".
+                            "Global attribute '$attribute' is not " .
                             "supported in any elements $support",
                             E_USER_WARNING
                         );
@@ -396,7 +392,7 @@ class HTMLPurifier_HTMLDefinition extends HTMLPurifier_Definition
 
         // setup forbidden elements ---------------------------------------
 
-        $forbidden_elements   = $config->get('HTML.ForbiddenElements');
+        $forbidden_elements = $config->get('HTML.ForbiddenElements');
         $forbidden_attributes = $config->get('HTML.ForbiddenAttributes');
 
         foreach ($this->info as $tag => $info) {

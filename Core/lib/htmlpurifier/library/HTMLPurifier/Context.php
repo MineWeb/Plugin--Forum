@@ -17,23 +17,6 @@ class HTMLPurifier_Context
     private $_storage = array();
 
     /**
-     * Registers a variable into the context.
-     * @param string $name String name
-     * @param mixed $ref Reference to variable to be registered
-     */
-    public function register($name, &$ref)
-    {
-        if (array_key_exists($name, $this->_storage)) {
-            trigger_error(
-                "Name $name produces collision, cannot re-register",
-                E_USER_ERROR
-            );
-            return;
-        }
-        $this->_storage[$name] =& $ref;
-    }
-
-    /**
      * Retrieves a variable reference from the context.
      * @param string $name String name
      * @param bool $ignore_error Boolean whether or not to ignore error
@@ -89,6 +72,23 @@ class HTMLPurifier_Context
         foreach ($context_array as $key => $discard) {
             $this->register($key, $context_array[$key]);
         }
+    }
+
+    /**
+     * Registers a variable into the context.
+     * @param string $name String name
+     * @param mixed $ref Reference to variable to be registered
+     */
+    public function register($name, &$ref)
+    {
+        if (array_key_exists($name, $this->_storage)) {
+            trigger_error(
+                "Name $name produces collision, cannot re-register",
+                E_USER_ERROR
+            );
+            return;
+        }
+        $this->_storage[$name] =& $ref;
     }
 }
 

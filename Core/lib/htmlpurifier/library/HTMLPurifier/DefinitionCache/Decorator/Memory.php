@@ -8,14 +8,13 @@
 class HTMLPurifier_DefinitionCache_Decorator_Memory extends HTMLPurifier_DefinitionCache_Decorator
 {
     /**
-     * @type array
-     */
-    protected $definitions;
-
-    /**
      * @type string
      */
     public $name = 'Memory';
+    /**
+     * @type array
+     */
+    protected $definitions;
 
     /**
      * @return HTMLPurifier_DefinitionCache_Decorator_Memory

@@ -32,13 +32,6 @@ abstract class HTMLPurifier_Definition
     public $type;
 
     /**
-     * Sets up the definition object into the final form, something
-     * not done by the constructor
-     * @param HTMLPurifier_Config $config
-     */
-    abstract protected function doSetup($config);
-
-    /**
      * Setup function that aborts if already setup
      * @param HTMLPurifier_Config $config
      */
@@ -50,6 +43,13 @@ abstract class HTMLPurifier_Definition
         $this->setup = true;
         $this->doSetup($config);
     }
+
+    /**
+     * Sets up the definition object into the final form, something
+     * not done by the constructor
+     * @param HTMLPurifier_Config $config
+     */
+    abstract protected function doSetup($config);
 }
 
 // vim: et sw=4 sts=4

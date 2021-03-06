@@ -49,6 +49,27 @@ class HTMLPurifier_Lexer
     public $tracksLineNumbers = false;
 
     // -- STATIC ----------------------------------------------------------
+    /**
+     * Most common entity to raw value conversion table for special entities.
+     * @type array
+     */
+    protected $_special_entity2str =
+        array(
+            '&quot;' => '"',
+            '&amp;' => '&',
+            '&lt;' => '<',
+            '&gt;' => '>',
+            '&#39;' => "'",
+            '&#039;' => "'",
+            '&#x27;' => "'"
+        );
+
+    // -- CONVENIENCE MEMBERS ---------------------------------------------
+
+    public function __construct()
+    {
+        $this->_entity_parser = new HTMLPurifier_EntityParser();
+    }
 
     /**
      * Retrieves or sets the default Lexer as a Prototype Factory.
@@ -147,34 +168,24 @@ class HTMLPurifier_Lexer
 
     }
 
-    // -- CONVENIENCE MEMBERS ---------------------------------------------
-
-    public function __construct()
-    {
-        $this->_entity_parser = new HTMLPurifier_EntityParser();
-    }
-
     /**
-     * Most common entity to raw value conversion table for special entities.
-     * @type array
+     * Callback function for escapeCDATA() that does the work.
+     *
+     * @warning Though this is public in order to let the callback happen,
+     *          calling it directly is not recommended.
+     * @param array $matches PCRE matches array, with index 0 the entire match
+     *                  and 1 the inside of the CDATA section.
+     * @return string Escaped internals of the CDATA section.
      */
-    protected $_special_entity2str =
-        array(
-            '&quot;' => '"',
-            '&amp;' => '&',
-            '&lt;' => '<',
-            '&gt;' => '>',
-            '&#39;' => "'",
-            '&#039;' => "'",
-            '&#x27;' => "'"
-        );
-
-    public function parseText($string, $config) {
-        return $this->parseData($string, false, $config);
+    protected static function CDATACallback($matches)
+    {
+        // not exactly sure why the character set is needed, but whatever
+        return htmlspecialchars($matches[1], ENT_COMPAT, 'UTF-8');
     }
 
-    public function parseAttr($string, $config) {
-        return $this->parseData($string, true, $config);
+    public function parseText($string, $config)
+    {
+        return $this->parseData($string, false, $config);
     }
 
     /**
@@ -224,6 +235,11 @@ class HTMLPurifier_Lexer
         return $string;
     }
 
+    public function parseAttr($string, $config)
+    {
+        return $this->parseData($string, true, $config);
+    }
+
     /**
      * Lexes an HTML string into tokens.
      * @param $string String HTML.
@@ -234,63 +250,6 @@ class HTMLPurifier_Lexer
     public function tokenizeHTML($string, $config, $context)
     {
         trigger_error('Call to abstract class', E_USER_ERROR);
-    }
-
-    /**
-     * Translates CDATA sections into regular sections (through escaping).
-     * @param string $string HTML string to process.
-     * @return string HTML with CDATA sections escaped.
-     */
-    protected static function escapeCDATA($string)
-    {
-        return preg_replace_callback(
-            '/<!\[CDATA\[(.+?)\]\]>/s',
-            array('HTMLPurifier_Lexer', 'CDATACallback'),
-            $string
-        );
-    }
-
-    /**
-     * Special CDATA case that is especially convoluted for <script>
-     * @param string $string HTML string to process.
-     * @return string HTML with CDATA sections escaped.
-     */
-    protected static function escapeCommentedCDATA($string)
-    {
-        return preg_replace_callback(
-            '#<!--//--><!\[CDATA\[//><!--(.+?)//--><!\]\]>#s',
-            array('HTMLPurifier_Lexer', 'CDATACallback'),
-            $string
-        );
-    }
-
-    /**
-     * Special Internet Explorer conditional comments should be removed.
-     * @param string $string HTML string to process.
-     * @return string HTML with conditional comments removed.
-     */
-    protected static function removeIEConditional($string)
-    {
-        return preg_replace(
-            '#<!--\[if [^>]+\]>.*?<!\[endif\]-->#si', // probably should generalize for all strings
-            '',
-            $string
-        );
-    }
-
-    /**
-     * Callback function for escapeCDATA() that does the work.
-     *
-     * @warning Though this is public in order to let the callback happen,
-     *          calling it directly is not recommended.
-     * @param array $matches PCRE matches array, with index 0 the entire match
-     *                  and 1 the inside of the CDATA section.
-     * @return string Escaped internals of the CDATA section.
-     */
-    protected static function CDATACallback($matches)
-    {
-        // not exactly sure why the character set is needed, but whatever
-        return htmlspecialchars($matches[1], ENT_COMPAT, 'UTF-8');
     }
 
     /**
@@ -351,11 +310,53 @@ class HTMLPurifier_Lexer
         $hidden_elements = $config->get('Core.HiddenElements');
         if ($config->get('Core.AggressivelyRemoveScript') &&
             !($config->get('HTML.Trusted') || !$config->get('Core.RemoveScriptContents')
-            || empty($hidden_elements["script"]))) {
+                || empty($hidden_elements["script"]))) {
             $html = preg_replace('#<script[^>]*>.*?</script>#i', '', $html);
         }
 
         return $html;
+    }
+
+    /**
+     * Special CDATA case that is especially convoluted for <script>
+     * @param string $string HTML string to process.
+     * @return string HTML with CDATA sections escaped.
+     */
+    protected static function escapeCommentedCDATA($string)
+    {
+        return preg_replace_callback(
+            '#<!--//--><!\[CDATA\[//><!--(.+?)//--><!\]\]>#s',
+            array('HTMLPurifier_Lexer', 'CDATACallback'),
+            $string
+        );
+    }
+
+    /**
+     * Translates CDATA sections into regular sections (through escaping).
+     * @param string $string HTML string to process.
+     * @return string HTML with CDATA sections escaped.
+     */
+    protected static function escapeCDATA($string)
+    {
+        return preg_replace_callback(
+            '/<!\[CDATA\[(.+?)\]\]>/s',
+            array('HTMLPurifier_Lexer', 'CDATACallback'),
+            $string
+        );
+    }
+
+    /**
+     * Special Internet Explorer conditional comments should be removed.
+     * @param string $string HTML string to process.
+     * @return string HTML with conditional comments removed.
+     */
+    protected static function removeIEConditional($string)
+    {
+        return preg_replace(
+            '#<!--\[if [^>]+\]>.*?<!\[endif\]-->#si', // probably should generalize for all strings
+            '',
+            $string
+        );
     }
 
     /**
@@ -369,7 +370,7 @@ class HTMLPurifier_Lexer
         if ($result) {
             // Make sure it's not in a comment
             $comment_start = strrpos($matches[1], '<!--');
-            $comment_end   = strrpos($matches[1], '-->');
+            $comment_end = strrpos($matches[1], '-->');
             if ($comment_start === false ||
                 ($comment_end !== false && $comment_end > $comment_start)) {
                 return $matches[2];

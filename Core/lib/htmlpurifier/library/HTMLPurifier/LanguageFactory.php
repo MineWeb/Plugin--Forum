@@ -108,7 +108,7 @@ class HTMLPurifier_LanguageFactory
             $lang = new HTMLPurifier_Language($config, $context);
         } else {
             $class = 'HTMLPurifier_Language_' . $pcode;
-            $file  = $this->dir . '/Language/classes/' . $code . '.php';
+            $file = $this->dir . '/Language/classes/' . $code . '.php';
             if (file_exists($file) || class_exists($class, false)) {
                 $lang = new $class($config, $context);
             } else {

@@ -7,14 +7,13 @@ class HTMLPurifier_AttrDef_HTML_Bool extends HTMLPurifier_AttrDef
 {
 
     /**
-     * @type string
-     */
-    protected $name;
-
-    /**
      * @type bool
      */
     public $minimized = true;
+    /**
+     * @type string
+     */
+    protected $name;
 
     /**
      * @param bool|string $name

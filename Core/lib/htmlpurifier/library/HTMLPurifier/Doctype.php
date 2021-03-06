@@ -59,14 +59,15 @@ class HTMLPurifier_Doctype
         $aliases = array(),
         $dtd_public = null,
         $dtd_system = null
-    ) {
-        $this->name         = $name;
-        $this->xml          = $xml;
-        $this->modules      = $modules;
-        $this->tidyModules  = $tidyModules;
-        $this->aliases      = $aliases;
-        $this->dtdPublic    = $dtd_public;
-        $this->dtdSystem    = $dtd_system;
+    )
+    {
+        $this->name = $name;
+        $this->xml = $xml;
+        $this->modules = $modules;
+        $this->tidyModules = $tidyModules;
+        $this->aliases = $aliases;
+        $this->dtdPublic = $dtd_public;
+        $this->dtdSystem = $dtd_system;
     }
 }
 

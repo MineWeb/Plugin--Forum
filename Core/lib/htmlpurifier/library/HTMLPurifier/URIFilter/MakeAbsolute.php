@@ -44,6 +44,51 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
     }
 
     /**
+     * Resolve dots and double-dots in a path stack
+     * @param array $stack
+     * @return array
+     */
+    private function _collapseStack($stack)
+    {
+        $result = array();
+        $is_folder = false;
+        for ($i = 0; isset($stack[$i]); $i++) {
+            $is_folder = false;
+            // absorb an internally duplicated slash
+            if ($stack[$i] == '' && $i && isset($stack[$i + 1])) {
+                continue;
+            }
+            if ($stack[$i] == '..') {
+                if (!empty($result)) {
+                    $segment = array_pop($result);
+                    if ($segment === '' && empty($result)) {
+                        // error case: attempted to back out too far:
+                        // restore the leading slash
+                        $result[] = '';
+                    } elseif ($segment === '..') {
+                        $result[] = '..'; // cannot remove .. with ..
+                    }
+                } else {
+                    // relative path, preserve the double-dots
+                    $result[] = '..';
+                }
+                $is_folder = true;
+                continue;
+            }
+            if ($stack[$i] == '.') {
+                // silently absorb
+                $is_folder = true;
+                continue;
+            }
+            $result[] = $stack[$i];
+        }
+        if ($is_folder) {
+            $result[] = '';
+        }
+        return $result;
+    }
+
+    /**
      * @param HTMLPurifier_URI $uri
      * @param HTMLPurifier_Config $config
      * @param HTMLPurifier_Context $context
@@ -107,51 +152,6 @@ class HTMLPurifier_URIFilter_MakeAbsolute extends HTMLPurifier_URIFilter
             $uri->port = $this->base->port;
         }
         return true;
-    }
-
-    /**
-     * Resolve dots and double-dots in a path stack
-     * @param array $stack
-     * @return array
-     */
-    private function _collapseStack($stack)
-    {
-        $result = array();
-        $is_folder = false;
-        for ($i = 0; isset($stack[$i]); $i++) {
-            $is_folder = false;
-            // absorb an internally duplicated slash
-            if ($stack[$i] == '' && $i && isset($stack[$i + 1])) {
-                continue;
-            }
-            if ($stack[$i] == '..') {
-                if (!empty($result)) {
-                    $segment = array_pop($result);
-                    if ($segment === '' && empty($result)) {
-                        // error case: attempted to back out too far:
-                        // restore the leading slash
-                        $result[] = '';
-                    } elseif ($segment === '..') {
-                        $result[] = '..'; // cannot remove .. with ..
-                    }
-                } else {
-                    // relative path, preserve the double-dots
-                    $result[] = '..';
-                }
-                $is_folder = true;
-                continue;
-            }
-            if ($stack[$i] == '.') {
-                // silently absorb
-                $is_folder = true;
-                continue;
-            }
-            $result[] = $stack[$i];
-        }
-        if ($is_folder) {
-            $result[] = '';
-        }
-        return $result;
     }
 }
 

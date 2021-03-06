@@ -11,6 +11,10 @@ class HTMLPurifier_HTMLModule_Tidy_Strict extends HTMLPurifier_HTMLModule_Tidy_X
      * @type string
      */
     public $defaultLevel = 'light';
+    /**
+     * @type bool
+     */
+    public $defines_child_def = true;
 
     /**
      * @return array
@@ -21,11 +25,6 @@ class HTMLPurifier_HTMLModule_Tidy_Strict extends HTMLPurifier_HTMLModule_Tidy_X
         $r['blockquote#content_model_type'] = 'strictblockquote';
         return $r;
     }
-
-    /**
-     * @type bool
-     */
-    public $defines_child_def = true;
 
     /**
      * @param HTMLPurifier_ElementDef $def

@@ -29,6 +29,18 @@ class HTMLPurifier_IDAccumulator
     }
 
     /**
+     * Load a list of IDs into the lookup table
+     * @param $array_of_ids Array of IDs to load
+     * @note This function doesn't care about duplicates
+     */
+    public function load($array_of_ids)
+    {
+        foreach ($array_of_ids as $id) {
+            $this->ids[$id] = true;
+        }
+    }
+
+    /**
      * Add an ID to the lookup table.
      * @param string $id ID to be added.
      * @return bool status, true if success, false if there's a dupe
@@ -39,18 +51,6 @@ class HTMLPurifier_IDAccumulator
             return false;
         }
         return $this->ids[$id] = true;
-    }
-
-    /**
-     * Load a list of IDs into the lookup table
-     * @param $array_of_ids Array of IDs to load
-     * @note This function doesn't care about duplicates
-     */
-    public function load($array_of_ids)
-    {
-        foreach ($array_of_ids as $id) {
-            $this->ids[$id] = true;
-        }
     }
 }
 

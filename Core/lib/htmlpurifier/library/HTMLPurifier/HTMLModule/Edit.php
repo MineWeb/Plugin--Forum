@@ -11,6 +11,17 @@ class HTMLPurifier_HTMLModule_Edit extends HTMLPurifier_HTMLModule
      * @type string
      */
     public $name = 'Edit';
+    /**
+     * @type bool
+     */
+    public $defines_child_def = true;
+
+    // HTML 4.01 specifies that ins/del must not contain block
+    // elements when used in an inline context, chameleon is
+    // a complicated workaround to acheive this effect
+
+    // Inline context ! Block context (exclamation mark is
+    // separator, see getChildDef for parsing)
 
     /**
      * @param HTMLPurifier_Config $config
@@ -25,18 +36,6 @@ class HTMLPurifier_HTMLModule_Edit extends HTMLPurifier_HTMLModule
         $this->addElement('del', 'Inline', $contents, 'Common', $attr);
         $this->addElement('ins', 'Inline', $contents, 'Common', $attr);
     }
-
-    // HTML 4.01 specifies that ins/del must not contain block
-    // elements when used in an inline context, chameleon is
-    // a complicated workaround to acheive this effect
-
-    // Inline context ! Block context (exclamation mark is
-    // separator, see getChildDef for parsing)
-
-    /**
-     * @type bool
-     */
-    public $defines_child_def = true;
 
     /**
      * @param HTMLPurifier_ElementDef $def

@@ -86,9 +86,9 @@ class HTMLPurifier_Bootstrap
                 // prepend flag exists, no need for shenanigans
                 spl_autoload_register($autoload, true, true);
             } else {
-                $buggy  = version_compare(PHP_VERSION, '5.2.11', '<');
+                $buggy = version_compare(PHP_VERSION, '5.2.11', '<');
                 $compat = version_compare(PHP_VERSION, '5.1.2', '<=') &&
-                          version_compare(PHP_VERSION, '5.1.0', '>=');
+                    version_compare(PHP_VERSION, '5.1.0', '>=');
                 foreach ($funcs as $func) {
                     if ($buggy && is_array($func)) {
                         // :TRICKY: There are some compatibility issues and some

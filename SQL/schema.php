@@ -1,4 +1,5 @@
 <?php
+
 class ForumAppSchema extends CakeSchema
 {
 
@@ -16,21 +17,12 @@ class ForumAppSchema extends CakeSchema
      */
 
     public $file = 'schema.php';
-
-    public function before($event = [])
-    {
-        return true;
-    }
-
-    public function after($event = []) {}
-
     public $forum__configs = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'config_name' => ['type' => 'string', 'null' => true, 'default' => null, 'length' => 30, 'unsigned' => false],
         'config_value' => ['type' => 'text', 'null' => true, 'default' => null, 'length' => 100, 'unsigned' => false],
         'lang' => ['type' => 'text', 'null' => false, 'default' => null, 'length' => 50, 'unsigned' => false]
     ];
-
     public $forum__conversations = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'id_conversation' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
@@ -42,13 +34,11 @@ class ForumAppSchema extends CakeSchema
         'msg_date' => ['type' => 'datetime', 'null' => false, 'default' => null],
         'content' => ['type' => 'text', 'null' => false, 'default' => null, 'length' => 4000, 'unsigned' => false]
     ];
-
     public $forum__conversation_recipients = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'id_conversation' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
         'author_recipient' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false]
     ];
-
     public $forum__forums = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'id_parent' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
@@ -62,7 +52,6 @@ class ForumAppSchema extends CakeSchema
         'automatic_lock' => ['type' => 'boolean', 'null' => true, 'default' => 0, 'length' => 1, 'unsigned' => false],
         'visible' => ['type' => 'text', 'null' => true, 'default' => null, 'length' => 200, 'unsigned' => false]
     ];
-
     public $forum__groups = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'group_name' => ['type' => 'string', 'null' => true, 'default' => null, 'length' => 20, 'unsigned' => false],
@@ -70,14 +59,12 @@ class ForumAppSchema extends CakeSchema
         'color' => ['type' => 'string', 'null' => true, 'default' => null, 'length' => 6, 'unsigned' => false],
         'position' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 2, 'unsigned' => false]
     ];
-
     public $forum__groups_users = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'id_user' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
         'id_group' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
         'domin' => ['type' => 'boolean', 'null' => true, 'default' => 0, 'length' => 1, 'unsigned' => false]
     ];
-
     public $forum__histories = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'date' => ['type' => 'datetime', 'null' => false, 'default' => null],
@@ -88,19 +75,16 @@ class ForumAppSchema extends CakeSchema
         'content' => ['type' => 'text', 'null' => true, 'default' => null, 'length' => 10000, 'unsigned' => false]
 
     ];
-
     public $forum__internals = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'internal_name' => ['type' => 'string', 'null' => true, 'default' => null, 'length' => 30, 'unsigned' => false],
         'internal_value' => ['type' => 'text', 'null' => true, 'default' => null, 'length' => 100, 'unsigned' => false]
     ];
-
     public $forum__insults = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'word' => ['type' => 'string', 'null' => false, 'default' => null, 'length' => 40, 'unsigned' => false],
         'replace' => ['type' => 'string', 'null' => false, 'default' => null, 'length' => 40, 'unsigned' => false]
     ];
-
     public $forum__msg_reports = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'id_user' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
@@ -109,22 +93,19 @@ class ForumAppSchema extends CakeSchema
         'reason' => ['type' => 'text', 'null' => false, 'default' => null, 'length' => 150, 'unsigned' => false],
         'content' => ['type' => 'text', 'null' => true, 'default' => null, 'length' => 500, 'unsigned' => false]
     ];
-
     public $forum__notes = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'id_user' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
-        'id_to_user' =>  ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
+        'id_to_user' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
         'id_message' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
         'type' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false]
     ];
-
     public $forum__forum_permissions = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'group_id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
         'name' => ['type' => 'string', 'null' => false, 'default' => 'FORUM', 'length' => 50, 'unsigned' => false],
         'value' => ['type' => 'string', 'null' => false, 'default' => null, 'length' => 40, 'unsigned' => false]
     ];
-
     public $forum__profiles = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'id_user' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
@@ -132,7 +113,6 @@ class ForumAppSchema extends CakeSchema
         'description' => ['type' => 'text', 'null' => true, 'default' => null, 'length' => 300, 'unsigned' => false],
         'social' => ['type' => 'text', 'null' => true, 'default' => null, 'length' => 2000, 'unsigned' => false],
     ];
-
     public $forum__punishments = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'id_user' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
@@ -140,7 +120,6 @@ class ForumAppSchema extends CakeSchema
         'date' => ['type' => 'datetime', 'null' => false, 'default' => null],
         'reason' => ['type' => 'text', 'null' => false, 'default' => null, 'length' => 150, 'unsigned' => false]
     ];
-
     public $forum__tags = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'name' => ['type' => 'string', 'null' => false, 'default' => null, 'length' => 50, 'unsigned' => false],
@@ -149,7 +128,6 @@ class ForumAppSchema extends CakeSchema
         'position' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 3, 'unsigned' => false],
         'used' => ['type' => 'text', 'null' => true, 'default' => null, 'length' => 500, 'unsigned' => false]
     ];
-
     public $forum__topics = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'id_parent' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
@@ -165,15 +143,22 @@ class ForumAppSchema extends CakeSchema
         'permission' => ['type' => 'text', 'null' => true, 'default' => null, 'length' => 4000, 'unsigned' => false],
         'visible' => ['type' => 'text', 'null' => true, 'default' => null, 'length' => 200, 'unsigned' => false]
     ];
-
     public $users = [
         'forum-last_activity' => ['type' => 'datetime', 'null' => true, 'default' => null]
     ];
-
     public $forum__viewws = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'date' => ['type' => 'datetime', 'null' => false, 'default' => null],
         'ip' => ['type' => 'string', 'null' => false, 'default' => '?', 'length' => 30, 'unsigned' => false],
         'id_topic' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false]
     ];
+
+    public function before($event = [])
+    {
+        return true;
+    }
+
+    public function after($event = [])
+    {
+    }
 }

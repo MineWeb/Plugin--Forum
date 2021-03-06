@@ -46,24 +46,24 @@ class Mysqldump
     const UTF8MB4 = 'utf8mb4';
 
     /**
-    * Database username
-    * @var string
-    */
+     * Database username
+     * @var string
+     */
     public $user;
     /**
-    * Database password
-    * @var string
-    */
+     * Database password
+     * @var string
+     */
     public $pass;
     /**
-    * Connection string for PDO
-    * @var string
-    */
+     * Connection string for PDO
+     * @var string
+     */
     public $dsn;
     /**
-    * Destination filename, defaults to stdout
-    * @var string
-    */
+     * Destination filename, defaults to stdout
+     * @var string
+     */
     public $fileName = 'php://output';
 
     // Internal stuff
@@ -81,30 +81,30 @@ class Mysqldump
     private $version;
     private $tableColumnTypes = array();
     /**
-    * database name, parsed from dsn
-    * @var string
-    */
+     * database name, parsed from dsn
+     * @var string
+     */
     private $dbName;
     /**
-    * host name, parsed from dsn
-    * @var string
-    */
+     * host name, parsed from dsn
+     * @var string
+     */
     private $host;
     /**
-    * dsn string parsed as an array
-    * @var array
-    */
+     * dsn string parsed as an array
+     * @var array
+     */
     private $dsnArray = array();
 
     /**
      * Constructor of Mysqldump. Note that in the case of an SQLite database
      * connection, the filename must be in the $db parameter.
      *
-     * @param string $dsn        PDO DSN connection string
-     * @param string $user       SQL account username
-     * @param string $pass       SQL account password
-     * @param array  $dumpSettings SQL database settings
-     * @param array  $pdoSettings  PDO configured attributes
+     * @param string $dsn PDO DSN connection string
+     * @param string $user SQL account username
+     * @param string $pass SQL account password
+     * @param array $dumpSettings SQL database settings
+     * @param array $pdoSettings PDO configured attributes
      */
     public function __construct(
         $dsn = '',
@@ -112,7 +112,8 @@ class Mysqldump
         $pass = '',
         $dumpSettings = array(),
         $pdoSettings = array()
-    ) {
+    )
+    {
         $dumpSettingsDefault = array(
             'include-tables' => array(),
             'exclude-tables' => array(),
@@ -165,12 +166,12 @@ class Mysqldump
         }
 
         $diff = array_diff(array_keys($this->dumpSettings), array_keys($dumpSettingsDefault));
-        if (count($diff)>0) {
+        if (count($diff) > 0) {
             throw new Exception("Unexpected value in dumpSettings: (" . implode(",", $diff) . ")");
         }
 
-        if ( !is_array($this->dumpSettings['include-tables']) ||
-            !is_array($this->dumpSettings['exclude-tables']) ) {
+        if (!is_array($this->dumpSettings['include-tables']) ||
+            !is_array($this->dumpSettings['exclude-tables'])) {
             throw new Exception("Include-tables and exclude-tables should be arrays");
         }
 
@@ -182,12 +183,49 @@ class Mysqldump
     }
 
     /**
-     * Destructor of Mysqldump. Unsets dbHandlers and database objects.
+     * Parse DSN string and extract dbname value
+     * Several examples of a DSN string
+     *   mysql:host=localhost;dbname=testdb
+     *   mysql:host=localhost;port=3307;dbname=testdb
+     *   mysql:unix_socket=/tmp/mysql.sock;dbname=testdb
      *
+     * @param string $dsn dsn string to parse
      */
-    public function __destruct()
+    private function parseDsn($dsn)
     {
-        $this->dbHandler = null;
+        if (empty($dsn) || (false === ($pos = strpos($dsn, ":")))) {
+            throw new Exception("Empty DSN string");
+        }
+
+        $this->dsn = $dsn;
+        $this->dbType = strtolower(substr($dsn, 0, $pos));
+
+        if (empty($this->dbType)) {
+            throw new Exception("Missing database type from DSN string");
+        }
+
+        $dsn = substr($dsn, $pos + 1);
+
+        foreach (explode(";", $dsn) as $kvp) {
+            $kvpArr = explode("=", $kvp);
+            $this->dsnArray[strtolower($kvpArr[0])] = $kvpArr[1];
+        }
+
+        if (empty($this->dsnArray['host']) &&
+            empty($this->dsnArray['unix_socket'])) {
+            throw new Exception("Missing host from DSN string");
+        }
+        $this->host = (!empty($this->dsnArray['host'])) ?
+            $this->dsnArray['host'] :
+            $this->dsnArray['unix_socket'];
+
+        if (empty($this->dsnArray['dbname'])) {
+            throw new Exception("Missing database name from DSN string");
+        }
+
+        $this->dbName = $this->dsnArray['dbname'];
+
+        return true;
     }
 
     /**
@@ -216,102 +254,18 @@ class Mysqldump
     }
 
     /**
-     * Parse DSN string and extract dbname value
-     * Several examples of a DSN string
-     *   mysql:host=localhost;dbname=testdb
-     *   mysql:host=localhost;port=3307;dbname=testdb
-     *   mysql:unix_socket=/tmp/mysql.sock;dbname=testdb
+     * Destructor of Mysqldump. Unsets dbHandlers and database objects.
      *
-     * @param string $dsn dsn string to parse
      */
-    private function parseDsn($dsn)
+    public function __destruct()
     {
-        if (empty($dsn) || (false === ($pos = strpos($dsn, ":")))) {
-            throw new Exception("Empty DSN string");
-        }
-
-        $this->dsn = $dsn;
-        $this->dbType = strtolower(substr($dsn, 0, $pos));
-
-        if (empty($this->dbType)) {
-            throw new Exception("Missing database type from DSN string");
-        }
-
-        $dsn = substr($dsn, $pos + 1);
-
-        foreach(explode(";", $dsn) as $kvp) {
-            $kvpArr = explode("=", $kvp);
-            $this->dsnArray[strtolower($kvpArr[0])] = $kvpArr[1];
-        }
-
-        if (empty($this->dsnArray['host']) &&
-            empty($this->dsnArray['unix_socket'])) {
-            throw new Exception("Missing host from DSN string");
-        }
-        $this->host = (!empty($this->dsnArray['host'])) ?
-            $this->dsnArray['host'] :
-            $this->dsnArray['unix_socket'];
-
-        if (empty($this->dsnArray['dbname'])) {
-            throw new Exception("Missing database name from DSN string");
-        }
-
-        $this->dbName = $this->dsnArray['dbname'];
-
-        return true;
-    }
-
-    /**
-     * Connect with PDO
-     *
-     * @return null
-     */
-    private function connect()
-    {
-        // Connecting with PDO
-        try {
-            switch ($this->dbType) {
-                case 'sqlite':
-                    $this->dbHandler = @new PDO("sqlite:" . $this->dbName, null, null, $this->pdoSettings);
-                    break;
-                case 'mysql':
-                case 'pgsql':
-                case 'dblib':
-                    $this->dbHandler = @new PDO(
-                        $this->dsn,
-                        $this->user,
-                        $this->pass,
-                        $this->pdoSettings
-                    );
-                    // Execute init commands once connected
-                    foreach($this->dumpSettings['init_commands'] as $stmt) {
-                        $this->dbHandler->exec($stmt);
-                    }
-                    // Store server version
-                    $this->version = $this->dbHandler->getAttribute(PDO::ATTR_SERVER_VERSION);
-                    break;
-                default:
-                    throw new Exception("Unsupported database type (" . $this->dbType . ")");
-            }
-        } catch (PDOException $e) {
-            throw new Exception(
-                "Connection to " . $this->dbType . " failed with message: " .
-                $e->getMessage()
-            );
-        }
-
-        if ( is_null($this->dbHandler) ) {
-            throw new Exception("Connection to ". $this->dbType . "failed");
-        }
-
-        $this->dbHandler->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_NATURAL);
-        $this->typeAdapter = TypeAdapterFactory::create($this->dbType, $this->dbHandler);
+        $this->dbHandler = null;
     }
 
     /**
      * Main call
      *
-     * @param string $filename  Name of file to write sql dump to
+     * @param string $filename Name of file to write sql dump to
      * @return null
      */
     public function start($filename = '')
@@ -381,6 +335,53 @@ class Mysqldump
     }
 
     /**
+     * Connect with PDO
+     *
+     * @return null
+     */
+    private function connect()
+    {
+        // Connecting with PDO
+        try {
+            switch ($this->dbType) {
+                case 'sqlite':
+                    $this->dbHandler = @new PDO("sqlite:" . $this->dbName, null, null, $this->pdoSettings);
+                    break;
+                case 'mysql':
+                case 'pgsql':
+                case 'dblib':
+                    $this->dbHandler = @new PDO(
+                        $this->dsn,
+                        $this->user,
+                        $this->pass,
+                        $this->pdoSettings
+                    );
+                    // Execute init commands once connected
+                    foreach ($this->dumpSettings['init_commands'] as $stmt) {
+                        $this->dbHandler->exec($stmt);
+                    }
+                    // Store server version
+                    $this->version = $this->dbHandler->getAttribute(PDO::ATTR_SERVER_VERSION);
+                    break;
+                default:
+                    throw new Exception("Unsupported database type (" . $this->dbType . ")");
+            }
+        } catch (PDOException $e) {
+            throw new Exception(
+                "Connection to " . $this->dbType . " failed with message: " .
+                $e->getMessage()
+            );
+        }
+
+        if (is_null($this->dbHandler)) {
+            throw new Exception("Connection to " . $this->dbType . "failed");
+        }
+
+        $this->dbHandler->setAttribute(PDO::ATTR_ORACLE_NULLS, PDO::NULL_NATURAL);
+        $this->typeAdapter = TypeAdapterFactory::create($this->dbType, $this->dbHandler);
+    }
+
+    /**
      * Returns header for dump file
      *
      * @return string
@@ -388,41 +389,22 @@ class Mysqldump
     private function getDumpFileHeader()
     {
         $header = '';
-        if ( !$this->dumpSettings['skip-comments'] ) {
+        if (!$this->dumpSettings['skip-comments']) {
             // Some info about software, source and time
             $header = "-- mysqldump-php https://github.com/ifsnop/mysqldump-php" . PHP_EOL .
-                    "--" . PHP_EOL .
-                    "-- Host: {$this->host}\tDatabase: {$this->dbName}" . PHP_EOL .
-                    "-- ------------------------------------------------------" . PHP_EOL;
+                "--" . PHP_EOL .
+                "-- Host: {$this->host}\tDatabase: {$this->dbName}" . PHP_EOL .
+                "-- ------------------------------------------------------" . PHP_EOL;
 
-            if ( !empty($this->version) ) {
+            if (!empty($this->version)) {
                 $header .= "-- Server version \t" . $this->version . PHP_EOL;
             }
 
-            if ( !$this->dumpSettings['skip-dump-date'] ) {
+            if (!$this->dumpSettings['skip-dump-date']) {
                 $header .= "-- Date: " . date('r') . PHP_EOL . PHP_EOL;
             }
         }
         return $header;
-    }
-
-    /**
-     * Returns footer for dump file
-     *
-     * @return string
-     */
-    private function getDumpFileFooter()
-    {
-        $footer = '';
-        if (!$this->dumpSettings['skip-comments']) {
-            $footer .= '-- Dump completed';
-            if (!$this->dumpSettings['skip-dump-date']) {
-                $footer .= ' on: ' . date('r');
-            }
-            $footer .= PHP_EOL;
-        }
-
-        return $footer;
     }
 
     /**
@@ -496,27 +478,6 @@ class Mysqldump
     }
 
     /**
-     * Compare if $table name matches with a definition inside $arr
-     * @param $table string
-     * @param $arr array with strings or patterns
-     * @return bool
-     */
-    private function matches($table, $arr) {
-        $match = false;
-
-        foreach ($arr as $pattern) {
-            if ( '/' != $pattern[0] ) {
-                continue;
-            }
-            if ( 1 == preg_match($pattern, $table) ) {
-                $match = true;
-            }
-        }
-
-        return in_array($table, $arr) || $match;
-    }
-
-    /**
      * Exports all the tables selected from database
      *
      * @return null
@@ -525,14 +486,14 @@ class Mysqldump
     {
         // Exporting tables one by one
         foreach ($this->tables as $table) {
-            if ( $this->matches($table, $this->dumpSettings['exclude-tables']) ) {
+            if ($this->matches($table, $this->dumpSettings['exclude-tables'])) {
                 continue;
             }
             $this->getTableStructure($table);
-            if ( false === $this->dumpSettings['no-data'] ) { // don't break compatibility with old trigger
+            if (false === $this->dumpSettings['no-data']) { // don't break compatibility with old trigger
                 $this->listValues($table);
-            } else if ( true === $this->dumpSettings['no-data']
-                 || $this->matches($table, $this->dumpSettings['no-data']) ) {
+            } else if (true === $this->dumpSettings['no-data']
+                || $this->matches($table, $this->dumpSettings['no-data'])) {
                 continue;
             } else {
                 $this->listValues($table);
@@ -541,75 +502,33 @@ class Mysqldump
     }
 
     /**
-     * Exports all the views found in database
-     *
-     * @return null
+     * Compare if $table name matches with a definition inside $arr
+     * @param $table string
+     * @param $arr array with strings or patterns
+     * @return bool
      */
-    private function exportViews()
+    private function matches($table, $arr)
     {
-        if (false === $this->dumpSettings['no-create-info']) {
-            // Exporting views one by one
-            foreach ($this->views as $view) {
-                if ( $this->matches($view, $this->dumpSettings['exclude-tables']) ) {
-                    continue;
-                }
-                $this->tableColumnTypes[$view] = $this->getTableColumnTypes($view);
-                $this->getViewStructureTable($view);
+        $match = false;
+
+        foreach ($arr as $pattern) {
+            if ('/' != $pattern[0]) {
+                continue;
             }
-            foreach ($this->views as $view) {
-                if ( $this->matches($view, $this->dumpSettings['exclude-tables']) ) {
-                    continue;
-                }
-                $this->getViewStructureView($view);
+            if (1 == preg_match($pattern, $table)) {
+                $match = true;
             }
         }
-    }
 
-    /**
-     * Exports all the triggers found in database
-     *
-     * @return null
-     */
-    private function exportTriggers()
-    {
-        // Exporting triggers one by one
-        foreach ($this->triggers as $trigger) {
-            $this->getTriggerStructure($trigger);
-        }
-    }
-
-    /**
-     * Exports all the procedures found in database
-     *
-     * @return null
-     */
-    private function exportProcedures()
-    {
-        // Exporting triggers one by one
-        foreach ($this->procedures as $procedure) {
-            $this->getProcedureStructure($procedure);
-        }
-    }
-
-    /**
-     * Exports all the events found in database
-     *
-     * @return null
-     */
-    private function exportEvents()
-    {
-        // Exporting triggers one by one
-        foreach ($this->events as $event) {
-            $this->getEventStructure($event);
-        }
+        return in_array($table, $arr) || $match;
     }
 
     /**
      * Table structure extractor
      *
-     * @todo move specific mysql code to typeAdapter
-     * @param string $tableName  Name of table to export
+     * @param string $tableName Name of table to export
      * @return null
+     * @todo move specific mysql code to typeAdapter
      */
     private function getTableStructure($tableName)
     {
@@ -641,21 +560,22 @@ class Mysqldump
     /**
      * Store column types to create data dumps and for Stand-In tables
      *
-     * @param string $tableName  Name of table to export
+     * @param string $tableName Name of table to export
      * @return array type column types detailed
      */
 
-    private function getTableColumnTypes($tableName) {
+    private function getTableColumnTypes($tableName)
+    {
         $columnTypes = array();
         $columns = $this->dbHandler->query(
             $this->typeAdapter->show_columns($tableName)
         );
         $columns->setFetchMode(PDO::FETCH_ASSOC);
 
-        foreach($columns as $key => $col) {
+        foreach ($columns as $key => $col) {
             $types = $this->typeAdapter->parseColumnType($col);
             $columnTypes[$col['Field']] = array(
-                'is_numeric'=> $types['is_numeric'],
+                'is_numeric' => $types['is_numeric'],
                 'is_blob' => $types['is_blob'],
                 'type' => $types['type'],
                 'type_sql' => $col['Type'],
@@ -667,190 +587,9 @@ class Mysqldump
     }
 
     /**
-     * View structure extractor, create table (avoids cyclic references)
-     *
-     * @todo move mysql specific code to typeAdapter
-     * @param string $viewName  Name of view to export
-     * @return null
-     */
-    private function getViewStructureTable($viewName)
-    {
-        if (!$this->dumpSettings['skip-comments']) {
-            $ret = "--" . PHP_EOL .
-                "-- Stand-In structure for view `${viewName}`" . PHP_EOL .
-                "--" . PHP_EOL . PHP_EOL;
-            $this->compressManager->write($ret);
-        }
-        $stmt = $this->typeAdapter->show_create_view($viewName);
-
-        // create views as tables, to resolve dependencies
-        foreach ($this->dbHandler->query($stmt) as $r) {
-            if ($this->dumpSettings['add-drop-table']) {
-                $this->compressManager->write(
-                    $this->typeAdapter->drop_view($viewName)
-                );
-            }
-
-            $this->compressManager->write(
-                $this->createStandInTable($viewName)
-            );
-            break;
-        }
-    }
-
-    /**
-     * Write a create table statement for the table Stand-In, show create
-     * table would return a create algorithm when used on a view
-     *
-     * @param string $viewName  Name of view to export
-     * @return string create statement
-     */
-    function createStandInTable($viewName) {
-        $ret = array();
-        foreach($this->tableColumnTypes[$viewName] as $k => $v) {
-            $ret[] = "`${k}` ${v['type_sql']}";
-        }
-        $ret = implode(PHP_EOL . ",", $ret);
-
-        $ret = "CREATE TABLE IF NOT EXISTS `$viewName` (" .
-            PHP_EOL . $ret . PHP_EOL . ");" . PHP_EOL;
-
-        return $ret;
-    }
-
-    /**
-     * View structure extractor, create view
-     *
-     * @todo move mysql specific code to typeAdapter
-     * @param string $viewName  Name of view to export
-     * @return null
-     */
-    private function getViewStructureView($viewName)
-    {
-        if (!$this->dumpSettings['skip-comments']) {
-            $ret = "--" . PHP_EOL .
-                "-- View structure for view `${viewName}`" . PHP_EOL .
-                "--" . PHP_EOL . PHP_EOL;
-            $this->compressManager->write($ret);
-        }
-        $stmt = $this->typeAdapter->show_create_view($viewName);
-
-        // create views, to resolve dependencies
-        // replacing tables with views
-        foreach ($this->dbHandler->query($stmt) as $r) {
-            // because we must replace table with view, we should delete it
-            $this->compressManager->write(
-                $this->typeAdapter->drop_view($viewName)
-            );
-            $this->compressManager->write(
-                $this->typeAdapter->create_view($r)
-            );
-            break;
-        }
-    }
-
-    /**
-     * Trigger structure extractor
-     *
-     * @param string $triggerName  Name of trigger to export
-     * @return null
-     */
-    private function getTriggerStructure($triggerName)
-    {
-        $stmt = $this->typeAdapter->show_create_trigger($triggerName);
-        foreach ($this->dbHandler->query($stmt) as $r) {
-            if ($this->dumpSettings['add-drop-trigger']) {
-                $this->compressManager->write(
-                    $this->typeAdapter->add_drop_trigger($triggerName)
-                );
-            }
-            $this->compressManager->write(
-                $this->typeAdapter->create_trigger($r)
-            );
-            return;
-        }
-    }
-
-    /**
-     * Procedure structure extractor
-     *
-     * @param string $procedureName  Name of procedure to export
-     * @return null
-     */
-    private function getProcedureStructure($procedureName)
-    {
-        if (!$this->dumpSettings['skip-comments']) {
-            $ret = "--" . PHP_EOL .
-                "-- Dumping routines for database '" . $this->dbName . "'" . PHP_EOL .
-                "--" . PHP_EOL . PHP_EOL;
-            $this->compressManager->write($ret);
-        }
-        $stmt = $this->typeAdapter->show_create_procedure($procedureName);
-        foreach ($this->dbHandler->query($stmt) as $r) {
-            $this->compressManager->write(
-                $this->typeAdapter->create_procedure($r, $this->dumpSettings)
-            );
-            return;
-        }
-    }
-
-    /**
-     * Event structure extractor
-     *
-     * @param string $eventName  Name of event to export
-     * @return null
-     */
-    private function getEventStructure($eventName)
-    {
-        if (!$this->dumpSettings['skip-comments']) {
-            $ret = "--" . PHP_EOL .
-                "-- Dumping events for database '" . $this->dbName . "'" . PHP_EOL .
-                "--" . PHP_EOL . PHP_EOL;
-            $this->compressManager->write($ret);
-        }
-        $stmt = $this->typeAdapter->show_create_event($eventName);
-        foreach ($this->dbHandler->query($stmt) as $r) {
-            $this->compressManager->write(
-                $this->typeAdapter->create_event($r, $this->dumpSettings)
-            );
-            return;
-        }
-    }
-
-    /**
-     * Escape values with quotes when needed
-     *
-     * @param string $tableName Name of table which contains rows
-     * @param array $row Associative array of column names and values to be quoted
-     *
-     * @return string
-     */
-    private function escape($tableName, $row)
-    {
-        $ret = array();
-        $columnTypes = $this->tableColumnTypes[$tableName];
-        foreach ($row as $colName => $colValue) {
-            if (is_null($colValue)) {
-                $ret[] = "NULL";
-            } elseif ($this->dumpSettings['hex-blob'] && $columnTypes[$colName]['is_blob']) {
-                if ($columnTypes[$colName]['type'] == 'bit' || !empty($colValue)) {
-                    $ret[] = "0x${colValue}";
-                } else {
-                    $ret[] = "''";
-                }
-            } elseif ($columnTypes[$colName]['is_numeric']) {
-                $ret[] = $colValue;
-            } else {
-                $ret[] = $this->dbHandler->quote($colValue);
-            }
-        }
-        return $ret;
-    }
-
-    /**
      * Table rows extractor
      *
-     * @param string $tableName  Name of table to export
+     * @param string $tableName Name of table to export
      *
      * @return null
      */
@@ -890,7 +629,7 @@ class Mysqldump
                 $lineSize += $this->compressManager->write(",(" . implode(",", $vals) . ")");
             }
             if (($lineSize > $this->dumpSettings['net_buffer_length']) ||
-                    !$this->dumpSettings['extended-insert']) {
+                !$this->dumpSettings['extended-insert']) {
                 $onlyOnce = true;
                 $lineSize = $this->compressManager->write(";" . PHP_EOL);
             }
@@ -907,7 +646,7 @@ class Mysqldump
     /**
      * Table rows extractor, append information prior to dump
      *
-     * @param string $tableName  Name of table to export
+     * @param string $tableName Name of table to export
      *
      * @return null
      */
@@ -916,7 +655,7 @@ class Mysqldump
         if (!$this->dumpSettings['skip-comments']) {
             $this->compressManager->write(
                 "--" . PHP_EOL .
-                "-- Dumping data for table `$tableName`" .  PHP_EOL .
+                "-- Dumping data for table `$tableName`" . PHP_EOL .
                 "--" . PHP_EOL . PHP_EOL
             );
         }
@@ -953,9 +692,65 @@ class Mysqldump
     }
 
     /**
+     * Build SQL List of all columns on current table
+     *
+     * @param string $tableName Name of table to get columns
+     *
+     * @return string SQL sentence with columns
+     */
+    function getColumnStmt($tableName)
+    {
+        $colStmt = array();
+        foreach ($this->tableColumnTypes[$tableName] as $colName => $colType) {
+            if ($colType['type'] == 'bit' && $this->dumpSettings['hex-blob']) {
+                $colStmt[] = "LPAD(HEX(`${colName}`),2,'0') AS `${colName}`";
+            } else if ($colType['is_blob'] && $this->dumpSettings['hex-blob']) {
+                $colStmt[] = "HEX(`${colName}`) AS `${colName}`";
+            } else if ($colType['is_virtual']) {
+                $this->dumpSettings['complete-insert'] = true;
+                continue;
+            } else {
+                $colStmt[] = "`${colName}`";
+            }
+        }
+
+        return $colStmt;
+    }
+
+    /**
+     * Escape values with quotes when needed
+     *
+     * @param string $tableName Name of table which contains rows
+     * @param array $row Associative array of column names and values to be quoted
+     *
+     * @return string
+     */
+    private function escape($tableName, $row)
+    {
+        $ret = array();
+        $columnTypes = $this->tableColumnTypes[$tableName];
+        foreach ($row as $colName => $colValue) {
+            if (is_null($colValue)) {
+                $ret[] = "NULL";
+            } elseif ($this->dumpSettings['hex-blob'] && $columnTypes[$colName]['is_blob']) {
+                if ($columnTypes[$colName]['type'] == 'bit' || !empty($colValue)) {
+                    $ret[] = "0x${colValue}";
+                } else {
+                    $ret[] = "''";
+                }
+            } elseif ($columnTypes[$colName]['is_numeric']) {
+                $ret[] = $colValue;
+            } else {
+                $ret[] = $this->dbHandler->quote($colValue);
+            }
+        }
+        return $ret;
+    }
+
+    /**
      * Table rows extractor, close locks and commits after dump
      *
-     * @param string $tableName  Name of table to export
+     * @param string $tableName Name of table to export
      *
      * @return null
      */
@@ -994,29 +789,238 @@ class Mysqldump
     }
 
     /**
-     * Build SQL List of all columns on current table
+     * Exports all the views found in database
      *
-     * @param string $tableName  Name of table to get columns
-     *
-     * @return string SQL sentence with columns
+     * @return null
      */
-    function getColumnStmt($tableName)
+    private function exportViews()
     {
-        $colStmt = array();
-        foreach($this->tableColumnTypes[$tableName] as $colName => $colType) {
-            if ($colType['type'] == 'bit' && $this->dumpSettings['hex-blob']) {
-                $colStmt[] = "LPAD(HEX(`${colName}`),2,'0') AS `${colName}`";
-            } else if ($colType['is_blob'] && $this->dumpSettings['hex-blob']) {
-                $colStmt[] = "HEX(`${colName}`) AS `${colName}`";
-            } else if ($colType['is_virtual']) {
-                $this->dumpSettings['complete-insert'] = true;
-                continue;
-            } else {
-                $colStmt[] = "`${colName}`";
+        if (false === $this->dumpSettings['no-create-info']) {
+            // Exporting views one by one
+            foreach ($this->views as $view) {
+                if ($this->matches($view, $this->dumpSettings['exclude-tables'])) {
+                    continue;
+                }
+                $this->tableColumnTypes[$view] = $this->getTableColumnTypes($view);
+                $this->getViewStructureTable($view);
+            }
+            foreach ($this->views as $view) {
+                if ($this->matches($view, $this->dumpSettings['exclude-tables'])) {
+                    continue;
+                }
+                $this->getViewStructureView($view);
             }
         }
+    }
 
-        return $colStmt;
+    /**
+     * View structure extractor, create table (avoids cyclic references)
+     *
+     * @param string $viewName Name of view to export
+     * @return null
+     * @todo move mysql specific code to typeAdapter
+     */
+    private function getViewStructureTable($viewName)
+    {
+        if (!$this->dumpSettings['skip-comments']) {
+            $ret = "--" . PHP_EOL .
+                "-- Stand-In structure for view `${viewName}`" . PHP_EOL .
+                "--" . PHP_EOL . PHP_EOL;
+            $this->compressManager->write($ret);
+        }
+        $stmt = $this->typeAdapter->show_create_view($viewName);
+
+        // create views as tables, to resolve dependencies
+        foreach ($this->dbHandler->query($stmt) as $r) {
+            if ($this->dumpSettings['add-drop-table']) {
+                $this->compressManager->write(
+                    $this->typeAdapter->drop_view($viewName)
+                );
+            }
+
+            $this->compressManager->write(
+                $this->createStandInTable($viewName)
+            );
+            break;
+        }
+    }
+
+    /**
+     * Write a create table statement for the table Stand-In, show create
+     * table would return a create algorithm when used on a view
+     *
+     * @param string $viewName Name of view to export
+     * @return string create statement
+     */
+    function createStandInTable($viewName)
+    {
+        $ret = array();
+        foreach ($this->tableColumnTypes[$viewName] as $k => $v) {
+            $ret[] = "`${k}` ${v['type_sql']}";
+        }
+        $ret = implode(PHP_EOL . ",", $ret);
+
+        $ret = "CREATE TABLE IF NOT EXISTS `$viewName` (" .
+            PHP_EOL . $ret . PHP_EOL . ");" . PHP_EOL;
+
+        return $ret;
+    }
+
+    /**
+     * View structure extractor, create view
+     *
+     * @param string $viewName Name of view to export
+     * @return null
+     * @todo move mysql specific code to typeAdapter
+     */
+    private function getViewStructureView($viewName)
+    {
+        if (!$this->dumpSettings['skip-comments']) {
+            $ret = "--" . PHP_EOL .
+                "-- View structure for view `${viewName}`" . PHP_EOL .
+                "--" . PHP_EOL . PHP_EOL;
+            $this->compressManager->write($ret);
+        }
+        $stmt = $this->typeAdapter->show_create_view($viewName);
+
+        // create views, to resolve dependencies
+        // replacing tables with views
+        foreach ($this->dbHandler->query($stmt) as $r) {
+            // because we must replace table with view, we should delete it
+            $this->compressManager->write(
+                $this->typeAdapter->drop_view($viewName)
+            );
+            $this->compressManager->write(
+                $this->typeAdapter->create_view($r)
+            );
+            break;
+        }
+    }
+
+    /**
+     * Exports all the triggers found in database
+     *
+     * @return null
+     */
+    private function exportTriggers()
+    {
+        // Exporting triggers one by one
+        foreach ($this->triggers as $trigger) {
+            $this->getTriggerStructure($trigger);
+        }
+    }
+
+    /**
+     * Trigger structure extractor
+     *
+     * @param string $triggerName Name of trigger to export
+     * @return null
+     */
+    private function getTriggerStructure($triggerName)
+    {
+        $stmt = $this->typeAdapter->show_create_trigger($triggerName);
+        foreach ($this->dbHandler->query($stmt) as $r) {
+            if ($this->dumpSettings['add-drop-trigger']) {
+                $this->compressManager->write(
+                    $this->typeAdapter->add_drop_trigger($triggerName)
+                );
+            }
+            $this->compressManager->write(
+                $this->typeAdapter->create_trigger($r)
+            );
+            return;
+        }
+    }
+
+    /**
+     * Exports all the procedures found in database
+     *
+     * @return null
+     */
+    private function exportProcedures()
+    {
+        // Exporting triggers one by one
+        foreach ($this->procedures as $procedure) {
+            $this->getProcedureStructure($procedure);
+        }
+    }
+
+    /**
+     * Procedure structure extractor
+     *
+     * @param string $procedureName Name of procedure to export
+     * @return null
+     */
+    private function getProcedureStructure($procedureName)
+    {
+        if (!$this->dumpSettings['skip-comments']) {
+            $ret = "--" . PHP_EOL .
+                "-- Dumping routines for database '" . $this->dbName . "'" . PHP_EOL .
+                "--" . PHP_EOL . PHP_EOL;
+            $this->compressManager->write($ret);
+        }
+        $stmt = $this->typeAdapter->show_create_procedure($procedureName);
+        foreach ($this->dbHandler->query($stmt) as $r) {
+            $this->compressManager->write(
+                $this->typeAdapter->create_procedure($r, $this->dumpSettings)
+            );
+            return;
+        }
+    }
+
+    /**
+     * Exports all the events found in database
+     *
+     * @return null
+     */
+    private function exportEvents()
+    {
+        // Exporting triggers one by one
+        foreach ($this->events as $event) {
+            $this->getEventStructure($event);
+        }
+    }
+
+    /**
+     * Event structure extractor
+     *
+     * @param string $eventName Name of event to export
+     * @return null
+     */
+    private function getEventStructure($eventName)
+    {
+        if (!$this->dumpSettings['skip-comments']) {
+            $ret = "--" . PHP_EOL .
+                "-- Dumping events for database '" . $this->dbName . "'" . PHP_EOL .
+                "--" . PHP_EOL . PHP_EOL;
+            $this->compressManager->write($ret);
+        }
+        $stmt = $this->typeAdapter->show_create_event($eventName);
+        foreach ($this->dbHandler->query($stmt) as $r) {
+            $this->compressManager->write(
+                $this->typeAdapter->create_event($r, $this->dumpSettings)
+            );
+            return;
+        }
+    }
+
+    /**
+     * Returns footer for dump file
+     *
+     * @return string
+     */
+    private function getDumpFileFooter()
+    {
+        $footer = '';
+        if (!$this->dumpSettings['skip-comments']) {
+            $footer .= '-- Dump completed';
+            if (!$this->dumpSettings['skip-dump-date']) {
+                $footer .= ' on: ' . date('r');
+            }
+            $footer .= PHP_EOL;
+        }
+
+        return $footer;
     }
 }
 
@@ -1051,11 +1055,11 @@ abstract class CompressManagerFactory
     public static function create($c)
     {
         $c = ucfirst(strtolower($c));
-        if (! CompressMethod::isValid($c)) {
+        if (!CompressMethod::isValid($c)) {
             throw new Exception("Compression method ($c) is not defined yet");
         }
 
-        $method =  __NAMESPACE__ . "\\" . "Compress" . $c;
+        $method = __NAMESPACE__ . "\\" . "Compress" . $c;
 
         return new $method;
     }
@@ -1067,7 +1071,7 @@ class CompressBzip2 extends CompressManagerFactory
 
     public function __construct()
     {
-        if (! function_exists("bzopen")) {
+        if (!function_exists("bzopen")) {
             throw new Exception("Compression is enabled, but bzip2 lib is not installed or configured properly");
         }
     }
@@ -1105,7 +1109,7 @@ class CompressGzip extends CompressManagerFactory
 
     public function __construct()
     {
-        if (! function_exists("gzopen")) {
+        if (!function_exists("gzopen")) {
             throw new Exception("Compression is enabled, but gzip lib is not installed or configured properly");
         }
     }
@@ -1202,10 +1206,10 @@ abstract class TypeAdapterFactory
     public static function create($c, $dbHandler = null)
     {
         $c = ucfirst(strtolower($c));
-        if (! TypeAdapter::isValid($c)) {
+        if (!TypeAdapter::isValid($c)) {
             throw new Exception("Database type support for ($c) not yet available");
         }
-        $method =  __NAMESPACE__ . "\\" . "TypeAdapter" . $c;
+        $method = __NAMESPACE__ . "\\" . "TypeAdapter" . $c;
         return new $method($dbHandler);
     }
 
@@ -1426,9 +1430,6 @@ class TypeAdapterSqlite extends TypeAdapterFactory
 class TypeAdapterMysql extends TypeAdapterFactory
 {
 
-    private $dbHandler = null;
-
-    // Numerical Mysql types
     public $mysqlTypes = array(
         'numerical' => array(
             'bit',
@@ -1463,7 +1464,10 @@ class TypeAdapterMysql extends TypeAdapterFactory
         )
     );
 
-    public function __construct ($dbHandler)
+    // Numerical Mysql types
+    private $dbHandler = null;
+
+    public function __construct($dbHandler)
     {
         $this->dbHandler = $dbHandler;
     }
@@ -1483,12 +1487,28 @@ class TypeAdapterMysql extends TypeAdapterFactory
         $resultSet->closeCursor();
         $ret = "";
 
-        $ret .= "CREATE DATABASE /*!32312 IF NOT EXISTS*/ `${databaseName}`".
+        $ret .= "CREATE DATABASE /*!32312 IF NOT EXISTS*/ `${databaseName}`" .
             " /*!40100 DEFAULT CHARACTER SET ${characterSet} " .
             " COLLATE ${collationDb} */;" . PHP_EOL . PHP_EOL .
             "USE `${databaseName}`;" . PHP_EOL . PHP_EOL;
 
         return $ret;
+    }
+
+    /**
+     * Check number of parameters passed to function, useful when inheriting.
+     * Raise exception if unexpected.
+     *
+     * @param integer $num_args
+     * @param integer $expected_num_args
+     * @param string $method_name
+     */
+    private function check_parameters($num_args, $expected_num_args, $method_name)
+    {
+        if ($num_args != $expected_num_args) {
+            throw new Exception("Unexpected parameter passed to $method_name");
+        }
+        return;
     }
 
     public function show_create_table($tableName)
@@ -1516,14 +1536,14 @@ class TypeAdapterMysql extends TypeAdapterFactory
         return "SHOW CREATE EVENT `$eventName`";
     }
 
-    public function create_table( $row, $dumpSettings )
+    public function create_table($row, $dumpSettings)
     {
-        if ( !isset($row['Create Table']) ) {
+        if (!isset($row['Create Table'])) {
             throw new Exception("Error getting table code, unknown output");
         }
 
         $createTable = $row['Create Table'];
-        if ( $dumpSettings['reset-auto-increment'] ) {
+        if ($dumpSettings['reset-auto-increment']) {
             $match = "/AUTO_INCREMENT=[0-9]+/s";
             $replace = "";
             $createTable = preg_replace($match, $replace, $createTable);
@@ -1541,7 +1561,7 @@ class TypeAdapterMysql extends TypeAdapterFactory
     {
         $ret = "";
         if (!isset($row['Create View'])) {
-                throw new Exception("Error getting view structure, unknown output");
+            throw new Exception("Error getting view structure, unknown output");
         }
 
         $triggerStmt = $row['Create View'];
@@ -1591,7 +1611,7 @@ class TypeAdapterMysql extends TypeAdapterFactory
             "*/ /*!50003 TRIGGER",
             $triggerStmtReplaced
         );
-        if ( false === $triggerStmtReplaced ) {
+        if (false === $triggerStmtReplaced) {
             $triggerStmtReplaced = $triggerStmt . " /* ";
         }
 
@@ -1625,7 +1645,7 @@ class TypeAdapterMysql extends TypeAdapterFactory
     public function create_event($row)
     {
         $ret = "";
-        if ( !isset($row['Create Event']) ) {
+        if (!isset($row['Create Event'])) {
             throw new Exception("Error getting event code, unknown output. " .
                 "Please check 'http://stackoverflow.com/questions/10853826/mysql-5-5-create-event-gives-syntax-error'");
         }
@@ -1644,7 +1664,7 @@ class TypeAdapterMysql extends TypeAdapterFactory
             $eventStmtReplaced
         );
 
-        if ( false === $eventStmtReplaced ) {
+        if (false === $eventStmtReplaced) {
             $eventStmtReplaced = $eventStmt . " /* ";
         }
 
@@ -1669,8 +1689,8 @@ class TypeAdapterMysql extends TypeAdapterFactory
             "/*!50003 SET collation_connection  = @saved_col_connection */ ;;" . PHP_EOL .
             "DELIMITER ;" . PHP_EOL .
             "/*!50106 SET TIME_ZONE= @save_time_zone */ ;" . PHP_EOL . PHP_EOL;
-            // Commented because we are doing this in restore_parameters()
-            // "/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;" . PHP_EOL . PHP_EOL;
+        // Commented because we are doing this in restore_parameters()
+        // "/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;" . PHP_EOL . PHP_EOL;
 
         return $ret;
     }
@@ -1824,7 +1844,7 @@ class TypeAdapterMysql extends TypeAdapterFactory
         $this->check_parameters(func_num_args(), $expected_num_args = 1, __METHOD__);
         $args = func_get_args();
         return "DROP TABLE IF EXISTS `${args[0]}`;" . PHP_EOL .
-                "/*!50001 DROP VIEW IF EXISTS `${args[0]}`*/;" . PHP_EOL;
+            "/*!50001 DROP VIEW IF EXISTS `${args[0]}`*/;" . PHP_EOL;
     }
 
     public function getDatabaseHeader()
@@ -1848,14 +1868,11 @@ class TypeAdapterMysql extends TypeAdapterFactory
         $colInfo = array();
         $colParts = explode(" ", $colType['Type']);
 
-        if($fparen = strpos($colParts[0], "("))
-        {
+        if ($fparen = strpos($colParts[0], "(")) {
             $colInfo['type'] = substr($colParts[0], 0, $fparen);
-            $colInfo['length']  = str_replace(")", "", substr($colParts[0], $fparen+1));
+            $colInfo['length'] = str_replace(")", "", substr($colParts[0], $fparen + 1));
             $colInfo['attributes'] = isset($colParts[1]) ? $colParts[1] : NULL;
-        }
-        else
-        {
+        } else {
             $colInfo['type'] = $colParts[0];
         }
         $colInfo['is_numeric'] = in_array($colInfo['type'], $this->mysqlTypes['numerical']);
@@ -1884,7 +1901,7 @@ class TypeAdapterMysql extends TypeAdapterFactory
         $ret .= "/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;" . PHP_EOL .
             "/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;" . PHP_EOL .
             "/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;" . PHP_EOL .
-            "/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;" . PHP_EOL .PHP_EOL;
+            "/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;" . PHP_EOL . PHP_EOL;
 
         return $ret;
     }
@@ -1909,21 +1926,5 @@ class TypeAdapterMysql extends TypeAdapterFactory
             "/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;" . PHP_EOL . PHP_EOL;
 
         return $ret;
-    }
-
-    /**
-     * Check number of parameters passed to function, useful when inheriting.
-     * Raise exception if unexpected.
-     *
-     * @param integer $num_args
-     * @param integer $expected_num_args
-     * @param string $method_name
-     */
-    private function check_parameters($num_args, $expected_num_args, $method_name)
-    {
-        if ( $num_args != $expected_num_args ) {
-            throw new Exception("Unexpected parameter passed to $method_name");
-        }
-        return;
     }
 }

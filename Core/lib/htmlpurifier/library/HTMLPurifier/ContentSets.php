@@ -71,8 +71,24 @@ class HTMLPurifier_ContentSets
         foreach ($this->lookup as $key => $lookup) {
             $this->info[$key] = implode(' | ', array_keys($lookup));
         }
-        $this->keys   = array_keys($this->info);
+        $this->keys = array_keys($this->info);
         $this->values = array_values($this->info);
+    }
+
+    /**
+     * Converts a string list of elements separated by pipes into
+     * a lookup array.
+     * @param string $string List of elements
+     * @return array Lookup array of elements
+     */
+    protected function convertToLookup($string)
+    {
+        $array = explode('|', str_replace(' ', '', $string));
+        $ret = array();
+        foreach ($array as $k) {
+            $ret[$k] = true;
+        }
+        return $ret;
     }
 
     /**
@@ -99,11 +115,6 @@ class HTMLPurifier_ContentSets
         $def->child = $this->getChildDef($def, $module);
     }
 
-    public function generateChildDefCallback($matches)
-    {
-        return $this->info[$matches[0]];
-    }
-
     /**
      * Instantiates a ChildDef based on content_model and content_model_type
      * member variables in HTMLPurifier_ElementDef
@@ -118,7 +129,7 @@ class HTMLPurifier_ContentSets
         $value = $def->content_model;
         if (is_object($value)) {
             trigger_error(
-                'Literal object child definitions should be stored in '.
+                'Literal object child definitions should be stored in ' .
                 'ElementDef->child not ElementDef->content_model',
                 E_USER_NOTICE
             );
@@ -150,20 +161,9 @@ class HTMLPurifier_ContentSets
         return false;
     }
 
-    /**
-     * Converts a string list of elements separated by pipes into
-     * a lookup array.
-     * @param string $string List of elements
-     * @return array Lookup array of elements
-     */
-    protected function convertToLookup($string)
+    public function generateChildDefCallback($matches)
     {
-        $array = explode('|', str_replace(' ', '', $string));
-        $ret = array();
-        foreach ($array as $k) {
-            $ret[$k] = true;
-        }
-        return $ret;
+        return $this->info[$matches[0]];
     }
 }
 

@@ -11,54 +11,47 @@ class HTMLPurifier_Generator
 {
 
     /**
+     * Configuration for the generator
+     * @type HTMLPurifier_Config
+     */
+    protected $config;
+    /**
      * Whether or not generator should produce XML output.
      * @type bool
      */
     private $_xhtml = true;
-
     /**
      * :HACK: Whether or not generator should comment the insides of <script> tags.
      * @type bool
      */
     private $_scriptFix = false;
-
     /**
      * Cache of HTMLDefinition during HTML output to determine whether or
      * not attributes should be minimized.
      * @type HTMLPurifier_HTMLDefinition
      */
     private $_def;
-
     /**
      * Cache of %Output.SortAttr.
      * @type bool
      */
     private $_sortAttr;
-
     /**
      * Cache of %Output.FlashCompat.
      * @type bool
      */
     private $_flashCompat;
-
     /**
      * Cache of %Output.FixInnerHTML.
      * @type bool
      */
     private $_innerHTMLFix;
-
     /**
      * Stack for keeping track of object information when outputting IE
      * compatibility code.
      * @type array
      */
     private $_flashStack = array();
-
-    /**
-     * Configuration for the generator
-     * @type HTMLPurifier_Config
-     */
-    protected $config;
 
     /**
      * @param HTMLPurifier_Config $config
@@ -90,7 +83,7 @@ class HTMLPurifier_Generator
         $html = '';
         for ($i = 0, $size = count($tokens); $i < $size; $i++) {
             if ($this->_scriptFix && $tokens[$i]->name === 'script'
-                && $i + 2 < $size && $tokens[$i+2] instanceof HTMLPurifier_Token_End) {
+                && $i + 2 < $size && $tokens[$i + 2] instanceof HTMLPurifier_Token_End) {
                 // script special case
                 // the contents of the script block must be ONE token
                 // for this to work.
@@ -106,16 +99,16 @@ class HTMLPurifier_Generator
             $tidy->parseString(
                 $html,
                 array(
-                   'indent'=> true,
-                   'output-xhtml' => $this->_xhtml,
-                   'show-body-only' => true,
-                   'indent-spaces' => 2,
-                   'wrap' => 68,
+                    'indent' => true,
+                    'output-xhtml' => $this->_xhtml,
+                    'show-body-only' => true,
+                    'indent-spaces' => 2,
+                    'wrap' => 68,
                 ),
                 'utf8'
             );
             $tidy->cleanRepair();
-            $html = (string) $tidy; // explicit cast necessary
+            $html = (string)$tidy; // explicit cast necessary
         }
 
         // Normalize newlines to system defined value
@@ -165,11 +158,11 @@ class HTMLPurifier_Generator
 
         } elseif ($token instanceof HTMLPurifier_Token_Empty) {
             if ($this->_flashCompat && $token->name == "param" && !empty($this->_flashStack)) {
-                $this->_flashStack[count($this->_flashStack)-1]->param[$token->attr['name']] = $token->attr['value'];
+                $this->_flashStack[count($this->_flashStack) - 1]->param[$token->attr['name']] = $token->attr['value'];
             }
             $attr = $this->generateAttributes($token->attr, $token->name);
-             return '<' . $token->name . ($attr ? ' ' : '') . $attr .
-                ( $this->_xhtml ? ' /': '' ) // <br /> v. <br>
+            return '<' . $token->name . ($attr ? ' ' : '') . $attr .
+                ($this->_xhtml ? ' /' : '') // <br /> v. <br>
                 . '>';
 
         } elseif ($token instanceof HTMLPurifier_Token_Text) {
@@ -181,23 +174,6 @@ class HTMLPurifier_Generator
             return '';
 
         }
-    }
-
-    /**
-     * Special case processor for the contents of script tags
-     * @param HTMLPurifier_Token $token HTMLPurifier_Token object.
-     * @return string
-     * @warning This runs into problems if there's already a literal
-     *          --> somewhere inside the script contents.
-     */
-    public function generateScriptFromToken($token)
-    {
-        if (!$token instanceof HTMLPurifier_Token_Text) {
-            return $this->generateFromToken($token);
-        }
-        // Thanks <http://lachy.id.au/log/2005/05/script-comments>
-        $data = preg_replace('#//\s*$#', '', $token->data);
-        return '<!--//--><![CDATA[//><!--' . "\n" . trim($data) . "\n" . '//--><!]]>';
     }
 
     /**
@@ -257,20 +233,20 @@ class HTMLPurifier_Generator
                     }
                 }
             }
-            $html .= $key.'="'.$this->escape($value).'" ';
+            $html .= $key . '="' . $this->escape($value) . '" ';
         }
         return rtrim($html);
     }
 
     /**
      * Escapes raw text data.
-     * @todo This really ought to be protected, but until we have a facility
-     *       for properly generating HTML here w/o using tokens, it stays
-     *       public.
      * @param string $string String data to escape for HTML.
      * @param int $quote Quoting style, like htmlspecialchars. ENT_NOQUOTES is
      *               permissible for non-attribute output.
      * @return string escaped data.
+     * @todo This really ought to be protected, but until we have a facility
+     *       for properly generating HTML here w/o using tokens, it stays
+     *       public.
      */
     public function escape($string, $quote = null)
     {
@@ -280,6 +256,23 @@ class HTMLPurifier_Generator
             $quote = ENT_COMPAT;
         }
         return htmlspecialchars($string, $quote, 'UTF-8');
+    }
+
+    /**
+     * Special case processor for the contents of script tags
+     * @param HTMLPurifier_Token $token HTMLPurifier_Token object.
+     * @return string
+     * @warning This runs into problems if there's already a literal
+     *          --> somewhere inside the script contents.
+     */
+    public function generateScriptFromToken($token)
+    {
+        if (!$token instanceof HTMLPurifier_Token_Text) {
+            return $this->generateFromToken($token);
+        }
+        // Thanks <http://lachy.id.au/log/2005/05/script-comments>
+        $data = preg_replace('#//\s*$#', '', $token->data);
+        return '<!--//--><![CDATA[//><!--' . "\n" . trim($data) . "\n" . '//--><!]]>';
     }
 }
 

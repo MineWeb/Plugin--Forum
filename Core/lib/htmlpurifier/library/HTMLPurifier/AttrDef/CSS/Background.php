@@ -90,7 +90,7 @@ class HTMLPurifier_AttrDef_CSS_Background extends HTMLPurifier_AttrDef
         }
         if ($caught['position'] !== false) {
             $caught['position'] = $this->info['background-position']->
-                validate($caught['position'], $config, $context);
+            validate($caught['position'], $config, $context);
         }
 
         $ret = array();

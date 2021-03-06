@@ -103,7 +103,7 @@ class HTMLPurifier_Injector_RemoveEmpty extends HTMLPurifier_Injector
                 break;
             }
             // This is safe because we removed the token that triggered this.
-            $this->rewindOffset($b+$deleted);
+            $this->rewindOffset($b + $deleted);
             return;
         }
     }

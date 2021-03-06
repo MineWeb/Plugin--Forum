@@ -36,7 +36,8 @@ class HTMLPurifier_DoctypeRegistry
         $aliases = array(),
         $dtd_public = null,
         $dtd_system = null
-    ) {
+    )
+    {
         if (!is_array($modules)) {
             $modules = array($modules);
         }
@@ -74,6 +75,21 @@ class HTMLPurifier_DoctypeRegistry
     }
 
     /**
+     * Creates a doctype based on a configuration object,
+     * will perform initialization on the doctype
+     * @note Use this function to get a copy of doctype that config
+     *       can hold on to (this is necessary in order to tell
+     *       Generator whether or not the current document is XML
+     *       based or not).
+     * @param HTMLPurifier_Config $config
+     * @return HTMLPurifier_Doctype
+     */
+    public function make($config)
+    {
+        return clone $this->get($this->getDoctypeFromConfig($config));
+    }
+
+    /**
      * Retrieves reference to a doctype of a certain name
      * @note This function resolves aliases
      * @note When possible, use the more fully-featured make()
@@ -91,21 +107,6 @@ class HTMLPurifier_DoctypeRegistry
             return $anon;
         }
         return $this->doctypes[$doctype];
-    }
-
-    /**
-     * Creates a doctype based on a configuration object,
-     * will perform initialization on the doctype
-     * @note Use this function to get a copy of doctype that config
-     *       can hold on to (this is necessary in order to tell
-     *       Generator whether or not the current document is XML
-     *       based or not).
-     * @param HTMLPurifier_Config $config
-     * @return HTMLPurifier_Doctype
-     */
-    public function make($config)
-    {
-        return clone $this->get($this->getDoctypeFromConfig($config));
     }
 
     /**

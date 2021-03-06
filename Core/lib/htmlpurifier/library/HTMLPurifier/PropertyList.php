@@ -49,16 +49,6 @@ class HTMLPurifier_PropertyList
     }
 
     /**
-     * Sets the value of a key, for this plist
-     * @param string $name
-     * @param mixed $value
-     */
-    public function set($name, $value)
-    {
-        $this->data[$name] = $value;
-    }
-
-    /**
      * Returns true if a given key exists
      * @param string $name
      * @return bool
@@ -66,6 +56,16 @@ class HTMLPurifier_PropertyList
     public function has($name)
     {
         return array_key_exists($name, $this->data);
+    }
+
+    /**
+     * Sets the value of a key, for this plist
+     * @param string $name
+     * @param mixed $value
+     */
+    public function set($name, $value)
+    {
+        $this->data[$name] = $value;
     }
 
     /**

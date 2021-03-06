@@ -167,17 +167,6 @@ class HTMLPurifier_VarParser
     }
 
     /**
-     * Generic error for if a type didn't work.
-     * @param mixed $var
-     * @param int $type
-     */
-    protected function errorGeneric($var, $type)
-    {
-        $vtype = gettype($var);
-        $this->error("Expected type " . HTMLPurifier_VarParser::getTypeName($type) . ", got $vtype");
-    }
-
-    /**
      * @param int $type
      * @return string
      */
@@ -192,6 +181,17 @@ class HTMLPurifier_VarParser
             return 'unknown';
         }
         return $lookup[$type];
+    }
+
+    /**
+     * Generic error for if a type didn't work.
+     * @param mixed $var
+     * @param int $type
+     */
+    protected function errorGeneric($var, $type)
+    {
+        $vtype = gettype($var);
+        $this->error("Expected type " . HTMLPurifier_VarParser::getTypeName($type) . ", got $vtype");
     }
 }
 

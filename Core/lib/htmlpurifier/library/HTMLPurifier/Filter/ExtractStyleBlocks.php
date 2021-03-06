@@ -73,15 +73,6 @@ class HTMLPurifier_Filter_ExtractStyleBlocks extends HTMLPurifier_Filter
     }
 
     /**
-     * Save the contents of CSS blocks to style matches
-     * @param array $matches preg_replace style $matches array
-     */
-    protected function styleCallback($matches)
-    {
-        $this->_styleMatches[] = $matches[1];
-    }
-
-    /**
      * Removes inline <style> tags from HTML, saves them for later use
      * @param string $html
      * @param HTMLPurifier_Config $config
@@ -116,8 +107,8 @@ class HTMLPurifier_Filter_ExtractStyleBlocks extends HTMLPurifier_Filter
      * @param string $css CSS styling to clean
      * @param HTMLPurifier_Config $config
      * @param HTMLPurifier_Context $context
-     * @throws HTMLPurifier_Exception
      * @return string Cleaned CSS
+     * @throws HTMLPurifier_Exception
      */
     public function cleanCSS($css, $config, $context)
     {
@@ -335,6 +326,15 @@ class HTMLPurifier_Filter_ExtractStyleBlocks extends HTMLPurifier_Filter
             );
         }
         return $css;
+    }
+
+    /**
+     * Save the contents of CSS blocks to style matches
+     * @param array $matches preg_replace style $matches array
+     */
+    protected function styleCallback($matches)
+    {
+        $this->_styleMatches[] = $matches[1];
     }
 }
 

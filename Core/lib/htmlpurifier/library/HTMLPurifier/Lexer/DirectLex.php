@@ -24,16 +24,6 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
     protected $_whitespace = "\x20\x09\x0D\x0A";
 
     /**
-     * Callback function for script CDATA fudge
-     * @param array $matches, in form of array(opening tag, contents, closing tag)
-     * @return string
-     */
-    protected function scriptCallback($matches)
-    {
-        return $matches[1] . htmlspecialchars($matches[2], ENT_COMPAT, 'UTF-8') . $matches[3];
-    }
-
-    /**
      * @param String $html
      * @param HTMLPurifier_Config $config
      * @param HTMLPurifier_Context $context
@@ -533,6 +523,16 @@ class HTMLPurifier_Lexer_DirectLex extends HTMLPurifier_Lexer
             }
         }
         return $array;
+    }
+
+    /**
+     * Callback function for script CDATA fudge
+     * @param array $matches , in form of array(opening tag, contents, closing tag)
+     * @return string
+     */
+    protected function scriptCallback($matches)
+    {
+        return $matches[1] . htmlspecialchars($matches[2], ENT_COMPAT, 'UTF-8') . $matches[3];
     }
 }
 

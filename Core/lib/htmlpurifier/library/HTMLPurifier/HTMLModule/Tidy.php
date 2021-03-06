@@ -67,6 +67,36 @@ class HTMLPurifier_HTMLModule_Tidy extends HTMLPurifier_HTMLModule
     }
 
     /**
+     * Defines all fixes the module will perform in a compact
+     * associative array of fix name to fix implementation.
+     * @return array
+     */
+    public function makeFixes()
+    {
+    }
+
+    /**
+     * Dynamically populates the $fixesForLevel member variable using
+     * the fixes array. It may be custom overloaded, used in conjunction
+     * with $defaultLevel, or not used at all.
+     * @param array $fixes
+     */
+    public function makeFixesForLevel($fixes)
+    {
+        if (!isset($this->defaultLevel)) {
+            return;
+        }
+        if (!isset($this->fixesForLevel[$this->defaultLevel])) {
+            trigger_error(
+                'Default level ' . $this->defaultLevel . ' does not exist',
+                E_USER_ERROR
+            );
+            return;
+        }
+        $this->fixesForLevel[$this->defaultLevel] = array_keys($fixes);
+    }
+
+    /**
      * Retrieves all fixes per a level, returning fixes for that specific
      * level as well as all levels below it.
      * @param string $level level identifier, see $levels for valid values
@@ -98,27 +128,6 @@ class HTMLPurifier_HTMLModule_Tidy extends HTMLPurifier_HTMLModule
             }
         }
         return $ret;
-    }
-
-    /**
-     * Dynamically populates the $fixesForLevel member variable using
-     * the fixes array. It may be custom overloaded, used in conjunction
-     * with $defaultLevel, or not used at all.
-     * @param array $fixes
-     */
-    public function makeFixesForLevel($fixes)
-    {
-        if (!isset($this->defaultLevel)) {
-            return;
-        }
-        if (!isset($this->fixesForLevel[$this->defaultLevel])) {
-            trigger_error(
-                'Default level ' . $this->defaultLevel . ' does not exist',
-                E_USER_ERROR
-            );
-            return;
-        }
-        $this->fixesForLevel[$this->defaultLevel] = array_keys($fixes);
     }
 
     /**
@@ -215,15 +224,6 @@ class HTMLPurifier_HTMLModule_Tidy extends HTMLPurifier_HTMLModule
 
         return array($property, $params);
 
-    }
-
-    /**
-     * Defines all fixes the module will perform in a compact
-     * associative array of fix name to fix implementation.
-     * @return array
-     */
-    public function makeFixes()
-    {
     }
 }
 

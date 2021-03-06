@@ -46,7 +46,8 @@ class HTMLPurifier_Node_Text extends HTMLPurifier_Node
         $this->col = $col;
     }
 
-    public function toTokenPair() {
+    public function toTokenPair()
+    {
         return array(new HTMLPurifier_Token_Text($this->data, $this->line, $this->col), null);
     }
 }

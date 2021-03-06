@@ -103,10 +103,10 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
         $parent_def = $definition->info_parent_def;
         $stack = array(
             array($top_node,
-                  $parent_def->descendants_are_inline,
-                  $parent_def->excludes, // exclusions
-                  0)
-            );
+                $parent_def->descendants_are_inline,
+                $parent_def->excludes, // exclusions
+                0)
+        );
 
         while (!empty($stack)) {
             list($node, $is_inline, $excludes, $ix) = array_pop($stack);
@@ -123,7 +123,7 @@ class HTMLPurifier_Strategy_FixNesting extends HTMLPurifier_Strategy
                         // child_def, but double check this...
                         $is_inline || $def->descendants_are_inline,
                         empty($def->excludes) ? $excludes
-                                              : array_merge($excludes, $def->excludes),
+                            : array_merge($excludes, $def->excludes),
                         0);
                     break;
                 }

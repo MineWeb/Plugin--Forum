@@ -11,31 +11,26 @@ class HTMLPurifier_URIFilter_Munge extends HTMLPurifier_URIFilter
      * @type bool
      */
     public $post = true;
-
-    /**
-     * @type string
-     */
-    private $target;
-
-    /**
-     * @type HTMLPurifier_URIParser
-     */
-    private $parser;
-
-    /**
-     * @type bool
-     */
-    private $doEmbed;
-
-    /**
-     * @type string
-     */
-    private $secretKey;
-
     /**
      * @type array
      */
     protected $replace = array();
+    /**
+     * @type string
+     */
+    private $target;
+    /**
+     * @type HTMLPurifier_URIParser
+     */
+    private $parser;
+    /**
+     * @type bool
+     */
+    private $doEmbed;
+    /**
+     * @type string
+     */
+    private $secretKey;
 
     /**
      * @param HTMLPurifier_Config $config

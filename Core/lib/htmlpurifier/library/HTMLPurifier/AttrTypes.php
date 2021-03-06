@@ -25,21 +25,21 @@ class HTMLPurifier_AttrTypes
         // definition wouldn't work.
 
         // pseudo-types, must be instantiated via shorthand
-        $this->info['Enum']    = new HTMLPurifier_AttrDef_Enum();
-        $this->info['Bool']    = new HTMLPurifier_AttrDef_HTML_Bool();
+        $this->info['Enum'] = new HTMLPurifier_AttrDef_Enum();
+        $this->info['Bool'] = new HTMLPurifier_AttrDef_HTML_Bool();
 
-        $this->info['CDATA']    = new HTMLPurifier_AttrDef_Text();
-        $this->info['ID']       = new HTMLPurifier_AttrDef_HTML_ID();
-        $this->info['Length']   = new HTMLPurifier_AttrDef_HTML_Length();
+        $this->info['CDATA'] = new HTMLPurifier_AttrDef_Text();
+        $this->info['ID'] = new HTMLPurifier_AttrDef_HTML_ID();
+        $this->info['Length'] = new HTMLPurifier_AttrDef_HTML_Length();
         $this->info['MultiLength'] = new HTMLPurifier_AttrDef_HTML_MultiLength();
         $this->info['NMTOKENS'] = new HTMLPurifier_AttrDef_HTML_Nmtokens();
-        $this->info['Pixels']   = new HTMLPurifier_AttrDef_HTML_Pixels();
-        $this->info['Text']     = new HTMLPurifier_AttrDef_Text();
-        $this->info['URI']      = new HTMLPurifier_AttrDef_URI();
+        $this->info['Pixels'] = new HTMLPurifier_AttrDef_HTML_Pixels();
+        $this->info['Text'] = new HTMLPurifier_AttrDef_Text();
+        $this->info['URI'] = new HTMLPurifier_AttrDef_URI();
         $this->info['LanguageCode'] = new HTMLPurifier_AttrDef_Lang();
-        $this->info['Color']    = new HTMLPurifier_AttrDef_HTML_Color();
-        $this->info['IAlign']   = self::makeEnum('top,middle,bottom,left,right');
-        $this->info['LAlign']   = self::makeEnum('top,bottom,left,right');
+        $this->info['Color'] = new HTMLPurifier_AttrDef_HTML_Color();
+        $this->info['IAlign'] = self::makeEnum('top,middle,bottom,left,right');
+        $this->info['LAlign'] = self::makeEnum('top,bottom,left,right');
         $this->info['FrameTarget'] = new HTMLPurifier_AttrDef_HTML_FrameTarget();
 
         // unimplemented aliases
@@ -53,7 +53,7 @@ class HTMLPurifier_AttrTypes
 
         // number is really a positive integer (one or more digits)
         // FIXME: ^^ not always, see start and value of list items
-        $this->info['Number']   = new HTMLPurifier_AttrDef_Integer(false, false, true);
+        $this->info['Number'] = new HTMLPurifier_AttrDef_Integer(false, false, true);
     }
 
     private static function makeEnum($in)

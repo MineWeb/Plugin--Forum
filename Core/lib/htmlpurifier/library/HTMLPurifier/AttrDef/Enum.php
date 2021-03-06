@@ -1,6 +1,7 @@
 <?php
 
 // Enum = Enumerated
+
 /**
  * Validates a keyword against a list of valid values.
  * @warning The case-insensitive compare of this function uses PHP's

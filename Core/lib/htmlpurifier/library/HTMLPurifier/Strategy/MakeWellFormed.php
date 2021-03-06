@@ -150,9 +150,9 @@ class HTMLPurifier_Strategy_MakeWellFormed extends HTMLPurifier_Strategy
         //      punt ($reprocess = true; continue;) and it does that for us.
 
         // isset is in loop because $tokens size changes during loop exec
-        for (;;
-             // only increment if we don't need to reprocess
-             $reprocess ? $reprocess = false : $token = $zipper->next($token)) {
+        for (; ;
+            // only increment if we don't need to reprocess
+            $reprocess ? $reprocess = false : $token = $zipper->next($token)) {
 
             // check for a rewind
             if (is_int($i)) {

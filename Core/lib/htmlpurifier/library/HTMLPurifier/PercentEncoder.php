@@ -36,7 +36,7 @@ class HTMLPurifier_PercentEncoder
         $this->preserve[45] = true; // Dash         -
         $this->preserve[46] = true; // Period       .
         $this->preserve[95] = true; // Underscore   _
-        $this->preserve[126]= true; // Tilde        ~
+        $this->preserve[126] = true; // Tilde        ~
 
         // extra letters not to escape
         if ($preserve !== false) {
@@ -91,7 +91,7 @@ class HTMLPurifier_PercentEncoder
                 continue;
             }
             $encoding = substr($part, 0, 2);
-            $text     = substr($part, 2);
+            $text = substr($part, 2);
             if (!ctype_xdigit($encoding)) {
                 $ret .= '%25' . $part;
                 continue;
