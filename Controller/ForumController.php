@@ -1062,10 +1062,10 @@ class ForumController extends ForumAppController
             if ($this->request->is('ajax')) {
                 $this->autoRender = false;
                 if (!empty($this->request->data['name']) && !empty($this->request->data['position']) && !empty($this->request->data['image'])) {
-                    $name = $this->request->data['name'];
+                    $name = str_replace("'", "&#x27;", $this->request->data['name']);
                     $position = $this->request->data['position'];
                     $image = $this->request->data['image'];
-                    $description = $this->request->data['description'];
+                    $description = str_replace("'", "&#x27;", $this->request->data['description']);
 
                     $this->Forum->update('forum', $this->request->data['id'], ['name' => $name, 'position' => $position, 'image' => $image, 'forum_description' => $description]);
 
@@ -1084,7 +1084,7 @@ class ForumController extends ForumAppController
 
                     $this->response->body(json_encode(array('statut' => true, 'msg' => $this->Lang->get('FORUM__ADD__SUCCESS'))));
                 } elseif(!empty($this->request->data['name_category'])) {
-                    $name = $this->urlRew($this->request->data['name_category']);
+                    $name = str_replace("'", "&#x27;", $this->urlRew($this->request->data['name_category']));
                     $parent = $this->request->data['parent'];
                     $position = $this->request->data['position'];
                     $image = $this->request->data['image'];
