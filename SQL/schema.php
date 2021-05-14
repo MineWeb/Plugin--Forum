@@ -38,7 +38,7 @@ class ForumAppSchema extends CakeSchema
         'read' => ['type' => 'boolean', 'null' => true, 'default' => 1, 'length' => 1, 'unsigned' => false],
         'title' => ['type' => 'text', 'null' => true, 'default' => null, 'length' => 100, 'unsigned' => false],
         'author_id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
-        'author_ip' => ['type' => 'string', 'null' => false, 'default' => null, 'length' => 15, 'unsigned' => false],
+        'author_ip' => ['type' => 'string', 'null' => false, 'default' => null, 'length' => 50, 'unsigned' => false],
         'msg_date' => ['type' => 'datetime', 'null' => false, 'default' => null],
         'content' => ['type' => 'text', 'null' => false, 'default' => null, 'length' => 4000, 'unsigned' => false]
     ];
@@ -82,7 +82,7 @@ class ForumAppSchema extends CakeSchema
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'date' => ['type' => 'datetime', 'null' => false, 'default' => null],
         'id_user' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false],
-        'ip' => ['type' => 'string', 'null' => false, 'default' => '?', 'length' => 30, 'unsigned' => false],
+        'ip' => ['type' => 'string', 'null' => false, 'default' => '?', 'length' => 50, 'unsigned' => false],
         'category' => ['type' => 'text', 'null' => false, 'default' => null, 'length' => 50, 'unsigned' => false],
         'action' => ['type' => 'text', 'null' => false, 'default' => null, 'length' => 200, 'unsigned' => false],
         'content' => ['type' => 'text', 'null' => true, 'default' => null, 'length' => 10000, 'unsigned' => false]
@@ -173,7 +173,7 @@ class ForumAppSchema extends CakeSchema
     public $forum__viewws = [
         'id' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 20, 'unsigned' => false, 'key' => 'primary'],
         'date' => ['type' => 'datetime', 'null' => false, 'default' => null],
-        'ip' => ['type' => 'string', 'null' => false, 'default' => '?', 'length' => 30, 'unsigned' => false],
+        'ip' => ['type' => 'string', 'null' => false, 'default' => '?', 'length' => 50, 'unsigned' => false],
         'id_topic' => ['type' => 'integer', 'null' => false, 'default' => null, 'length' => 8, 'unsigned' => false]
     ];
 }
